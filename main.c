@@ -116,7 +116,9 @@ void typeSMSPredictive()
           wait(1);
           readInput(&saisie);
           printf("1) Word 1   2) Word 2   3) Word 3\n" );
-          if(serachSpace)
+          printf("%s", SMS);
+          printf("%s", CurrentWord);
+          if(searchSpace)
           {
                
           }
@@ -130,6 +132,7 @@ void typeSMSPredictive()
                scanf("%d",&input );
                switch (input) {
                case 1:
+
                     break;
                case 2: 
                     break;
@@ -154,14 +157,14 @@ void cleanBuffer(void)
 
 bool searchEnter(char *string)
 {
+     bool value=false;
+
      for(int i=0;i<strlen(string);i++)
      {
-          if((int)string[i]==13)
-               return true;
-          else
-               return false;
+          if(string[i]=='\n')
+               value= true;
      }
-
+     return value;
 }
 
 void readInput(char *string)
