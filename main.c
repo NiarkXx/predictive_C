@@ -194,6 +194,17 @@ void readInput(char *string)
           cleanBuffer();
 }
 
+bool searchSpace(char *string)
+{
+     bool value=false;
+     for(int i=0;i<strlen(string);i++)
+    {
+          if(string[i]==' ')
+               value= true;
+    }
+   return value;
+}
+
 void wait(float time)
 {
     clock_t waiting = clock() + (time * CLOCKS_PER_SEC); 
