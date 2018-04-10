@@ -2,12 +2,13 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <SDL.h>
 
 //----------------- CONSTANTS -----------------
 
 #define MAX_LENGTH 300
 #define MAX_LENGTH_WORD 30
-
+SDL_Event event;
 
 
 //----------------- STRUCTURES -----------------
@@ -152,4 +153,29 @@ void readInput(char *string)
      }
 	else
 		cleanBuffer();
+}
+
+
+void readWithEvent()
+{
+     bool continu=true;
+     int keyValue;
+     char castKeyValue;
+     while(continu)
+     {
+          SDL_WaitEvent(&event);
+          if(event.type==SDL_KEYDOWN)
+          {
+               printf("Right event\n" );
+               keyValue=event.key.keysym.sym;
+               castKeyValue=(char)keyValue;
+               printf("%d --> %c\n",keyValue,castKeyValue );
+
+          }
+          else
+          {
+               printf("Wrong event\n" );
+
+          }
+     }
 }
