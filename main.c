@@ -29,6 +29,8 @@ void createDictionnary( char nameDictionnary[], bool typeOfDic);
 
 
 bool enablePredictive = false;
+char smsArray[MAX_LENGTH];
+char currentWord[MAX_LENGTH_WORD];
 
 
 //----------------- MAIN -----------------
@@ -116,8 +118,8 @@ void typeSMSPredictive()
           wait(1);
           readInput(&saisie);
           printf("1) Word 1   2) Word 2   3) Word 3\n" );
-          printf("%s", SMS);
-          printf("%s", CurrentWord);
+          printf("%s", smsArray);
+          printf("%s", currentWord);
           if(searchSpace)
           {
                
@@ -127,7 +129,7 @@ void typeSMSPredictive()
                send = true;
           }
           
-          if(search_backslash)
+          if(searchBackSlash)
           {
                scanf("%d",&input );
                switch (input) {
