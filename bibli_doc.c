@@ -4,7 +4,7 @@ Recherche de mot dans un dictionnaire
 
 Bibliothèque créée par Ludovic Barbier
 
-ISMIN 1A 
+ISMIN 1A
 
 2017-2018
 
@@ -80,7 +80,7 @@ Mot** lecture_fichier()
 	FILE *fp = fopen("dictionnaire.txt", "r");
 	char monmot[Taille_max];
 	while (fscanf(fp, "%s \n", monmot) != EOF)
-	{	
+	{
 		insertion(tab, monmot);
 	}
 	return tab;
@@ -103,8 +103,28 @@ void recherche(Mot **tab, char motatrouver[Taille_max])
 	{
 		printf("Le mot est dans le dictionnaire \n");
 	}
-	else 
+	else
 	{
 		printf("Le mot n'est pas dans le dictionnaire \n");
 	}
+}
+
+
+
+void ecritureFichier(char string[])
+{
+	FILE *file=fopen("dictionnaire.txt","w");
+
+
+	if (file!=NULL) {
+
+		while(string[i] !='\0')
+		{
+
+		}
+
+
+
+	}
+	fclose(file);
 }
