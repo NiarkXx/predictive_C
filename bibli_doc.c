@@ -109,8 +109,6 @@ void recherche(Mot **tab, char motatrouver[Taille_max])
 	}
 }
 
-
-
 void ecritureFichier(char string[])
 {
 	FILE *file=fopen("dictionnaire.txt","w");
@@ -118,13 +116,8 @@ void ecritureFichier(char string[])
 
 	if (file!=NULL) {
 
-		while(string[i] !='\0')
-		{
-
-		}
-
-
 
 	}
+	printf("Error : Can't read the file\n");
 	fclose(file);
 }
