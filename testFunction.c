@@ -4,13 +4,14 @@
 #include <string.h>
 //#include <SDL/SDL.h>
 
-
+#define MAX_LENGTH 300
 
 //void readWithEvent(void);
 //void createWindow(void);
 // bool searchEnter(char *string);
 // bool searchBackSlash(char *string);
 // bool searchSpace(char *string);
+void writeWordIntoDic(char string[]);
 
 int main(int argc, char const *argv[]) {
 
@@ -27,7 +28,7 @@ int main(int argc, char const *argv[]) {
      //      printf("false\n" );
      // else
      //      printf("Error\n" );
-
+     writeWordIntoDic("Ptdrrr");
      return EXIT_SUCCESS;
 }
 
@@ -66,29 +67,46 @@ int main(int argc, char const *argv[]) {
 // }
 
 
-void writeWordIntoDic(char *string)
+
+
+void writeWordIntoDic(char string[])
 {
-     FILE *file=fopen("dictionnaire.txt","w");
+	FILE *file=fopen("dictionnaire.txt","r+");
+     int cursor=0;
+     char word[MAX_LENGTH];
+     FILE *fileCopy=fopen("dictionnaire_tmp.txt","w+");
+     bool done=false;
 
-     if (file!=NULL) {
+	if (file!=NULL && fileCopy!=NULL) {
+          rewind(file);
 
-
-     }
-     printf("Error : Can't read the file\n");
-     fclose(file);
-}
-
-void ecritureFichier(char string[])
-{
-	FILE *file=fopen("dictionnaire.txt","w");
-
-
-	if (file!=NULL) {
-
-
+          while(fscanf(file, "%s", word)!=EOF)
+          //while(fscanf(file, "%s", word)==1)
+          {
+               if(done!=true)
+               {
+                    if(strcoll(word,string)<0)
+                    {
+                         fprintf(fileCopy, "%s\n",word );
+                    }
+                    else
+                    {
+                         fprintf(fileCopy,"%s\n",string);
+                         fprintf(fileCopy,"%s\n",word);
+                         done=true;
+                    }
+               }
+               else
+                    fprintf(fileCopy,"%s\n",word);
+          }
 	}
-	printf("Error : Can't read the file\n");
+     else
+	    printf("Error : Can't read the file\n");
+
 	fclose(file);
+     fclose(fileCopy);
+     remove("dictionnaire.txt");
+     rename("dictionnaire_tmp.txt","dictionnaire.txt");
 }
 
 //-------------------------------------------------------
