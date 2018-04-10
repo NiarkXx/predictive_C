@@ -10,13 +10,16 @@
 //void createWindow(void);
 bool searchEnter(char *string);
 bool searchBackSlash(char *string);
+bool searchSpace(char *string);
 
 int main(int argc, char const *argv[]) {
 
-     char sentence[20] ="Je suis une  phrase";
+     char sentence[20] ="Jesuisunephrase";
      bool test;
      //test=searchEnter(sentence);
-     test=searchBackSlash(sentence);
+     //test=searchBackSlash(sentence);
+     test=searchSpace(sentence);
+
 
      if(test==true)
           printf("True\n" );
@@ -51,7 +54,16 @@ bool searchBackSlash(char *string)
      return value;
 }
 
-
+bool searchSpace(char *string)
+{
+     bool value=false;
+     for(int i=0;i<strlen(string);i++)
+     {
+          if(string[i]==' ')
+               value= true;
+     }
+     return value;
+}
 
 
 //-------------------------------------------------------
