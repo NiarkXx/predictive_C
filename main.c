@@ -105,34 +105,37 @@ void selectMode()
 
 void typeSMSPredictive()
 {
+     system("clear")
      int input=0;
      bool send=false;
      char *saisie;
-     printf("Entrez votre SMS\n");
+     printf("Type your SMS\n");
 
      while(send == false)
      {
-          wait(5);
+          wait(1);
           readInput(&saisie);
-          printf("1) Word 1\n" );
-          printf("2) Word 2\n" );
-          printf("3) Word 3\n" );
-          printf("4) Continue to type\n" );
-          printf("5) Send \n" );
-          scanf("%d",&input );
+          printf("1) Word 1   2) Word 2   3) Word 3\n" );
 
-          switch (input) {
+          if(search_enter)
+          {
+               send = true;
+          }
+          
+          if(search_backslash)
+          {
+               scanf("%d",&input );
+               switch (input) {
                case 1:
                     break;
                case 2: 
                     break;
                case 3:
                     break;
-               case 4:
+               default:
+                    printf("ERROR")
                     break;
-               case 5:
-                    send=true;
-                    break;
+               }
           }
      }
 }
