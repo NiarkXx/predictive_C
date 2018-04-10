@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <time.h>
 
 //----------------- CONSTANTS -----------------
 
@@ -152,4 +153,10 @@ void readInput(char *string)
      }
 	else
 		cleanBuffer();
+}
+
+void attendre(float temps)
+{
+    clock_t attente=clock()+(temps*CLOCKS_PER_SEC); 
+    while(clock()<attente);
 }
