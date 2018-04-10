@@ -21,10 +21,8 @@ int main(int argc, char const *argv[]) {
      else
           printf("Error\n" );
 
-
      return EXIT_SUCCESS;
 }
-
 
 bool searchEnter(char *string)
 {
@@ -35,9 +33,7 @@ bool searchEnter(char *string)
           else
                return false;
      }
-
 }
-
 
 
 
