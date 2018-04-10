@@ -76,6 +76,9 @@ void readWithEvent()
                          break;
 
                     case SDL_KEYDOWN:
+                    keyValue= event.key.keysym.sym;
+                    castKeyValue=(char)keyValue;
+                    printf("%d --> %c\n",keyValue,castKeyValue );
                     switch (event.key.keysym.sym) {
                          case SDLK_b:
                          printf("It's B key\n" );
