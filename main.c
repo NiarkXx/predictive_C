@@ -22,8 +22,6 @@ void typeSMSNonPredictive(void);
 void selectMode(void);
 void cleanBuffer(void);
 void readInput(char *string);
-void displayDictionnary(bool typeOfDic );
-void createDictionnary( char nameDictionnary[], bool typeOfDic);
 
 //----------------- GLOBALS -----------------
 
@@ -36,8 +34,6 @@ char currentWord[MAX_LENGTH_WORD];
 //----------------- MAIN -----------------
 int main(int argc, char const *argv[]) {
 
-     createDictionnary("french_dic.txt",1);
-     displayDictionnary(1);
 
      //menu();
 
@@ -125,27 +121,37 @@ void typeSMSPredictive()
                strcat(smsArray, currentWord);
                currentWord[0] = "\0";
           }
-          if(searchEnter)
+          else if(searchEnter)
           {
                send = true;
           }
           
-          if(searchBackSlash)
+          else if(searchBackSlash)
           {
                scanf("%d",&input );
                switch (input) {
                case 1:
-
+                    memcpy(currentWord, word1, strlen(word1));
+                    strcat(smsArray, currentWord);
+                    currentWord[0] = "\0";
                     break;
                case 2: 
+                    memcpy(currentWord, word2, strlen(word2));
+                    strcat(smsArray, currentWord);
+                    currentWord[0] = "\0";
                     break;
                case 3:
+                    memcpy(currentWord, word3, strlen(word3));
+                    strcat(smsArray, currentWord);
+                    currentWord[0] = "\0";
                     break;
                default:
                     printf("ERROR")
                     break;
                }
           }
+          else
+
      }
 }
 
