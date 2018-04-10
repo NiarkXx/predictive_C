@@ -2,13 +2,13 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-#include <SDL.h>
+#include <time.h>
 
 //----------------- CONSTANTS -----------------
 
 #define MAX_LENGTH 300
 #define MAX_LENGTH_WORD 30
-SDL_Event event;
+
 
 
 //----------------- STRUCTURES -----------------
@@ -28,7 +28,7 @@ void createDictionnary( char nameDictionnary[], bool typeOfDic);
 //----------------- GLOBALS -----------------
 
 
-bool enablePredictive =false;
+bool enablePredictive = false;
 char smsArray[MAX_LENGTH];
 char currentWord[MAX_LENGTH_WORD];
 
@@ -107,89 +107,93 @@ void selectMode()
 
 void typeSMSPredictive()
 {
+     system("clear")
      int input=0;
      bool send=false;
-
+     char *saisie;
+     printf("Type your SMS\n");
 
      while(send == false)
      {
-          printf("1) Word 1\n" );
-          printf("2) Word 2\n" );
-          printf("3) Word 3\n" );
-          printf("4) Continue to type\n" );
-          printf("5) Send \n" );
-          scanf("%d",&input );
-
-          switch (input) {
+          wait(1);
+          readInput(&saisie);
+          printf("1) Word 1   2) Word 2   3) Word 3\n" );
+          printf("%s", smsArray);
+          printf("%s", currentWord);
+          if(searchSpace)
+          {
+               
+          }
+          if(searchEnter)
+          {
+               send = true;
+          }
+          
+          if(searchBackSlash)
+          {
+               scanf("%d",&input );
+               switch (input) {
                case 1:
+
                     break;
-               case 2:
+               case 2: 
                     break;
                case 3:
                     break;
-               case 4:
+               default:
+                    printf("ERROR")
                     break;
-               case 5:
-                    send=true;
-                    break;
+               }
           }
      }
 }
 
 void cleanBuffer(void)
 {
-	int c=0;
-	while(c !='\n' && c!=EOF)
-	{
-		c=getchar();
-	}
+     int c=0;
+     while(c !='\n' && c!=EOF)
+     {
+          c=getchar();
+     }
+}
+
+bool searchEnter(char *string)
+{
+     bool value=false;
+
+     for(int i=0;i<strlen(string);i++)
+     {
+          if(string[i]=='\n')
+               value= true;
+     }
+     return value;
+}
+
+bool searchBackSlash(char *string)
+{
+     bool value=false;
+     for(int i=0;i<strlen(string);i++)
+     {
+          if(string[i]=='/')
+               value= true;
+     }
+     return value;
 }
 
 void readInput(char *string)
 {
-	char *position=NULL;
-	if (fgets(string,MAX_LENGTH+1,stdin)!=NULL)
-	{
-		if(position=strchr(string,'\n'))
-		*position='\0';
+     char *position=NULL;
+     if (fgets(string,MAX_LENGTH+1,stdin)!=NULL)
+     {
+          if(position=strchr(string,'\n'))
+          *position='\0';
      }
-	else
-		cleanBuffer();
+     else
+          cleanBuffer();
 }
 
-
-// bool searchEnter(char *string)
-// {
-//      for(int i=0;i<strlen(string);i++)
-//      {
-//           if((int)string[i]==13)
-//                return true;
-//           else
-//                return false;
-//      }
-//
-// }
-
-void readWithEvent()
+void wait(float time)
 {
-     bool continu=true;
-     int keyValue;
-     char castKeyValue;
-     while(continu)
-     {
-          SDL_WaitEvent(&event);
-          if(event.type==SDL_KEYDOWN)
-          {
-               printf("Right event\n" );
-               keyValue=event.key.keysym.sym;
-               castKeyValue=(char)keyValue;
-               printf("%d --> %c\n",keyValue,castKeyValue );
-
-          }
-          else
-          {
-               printf("Wrong event\n" );
-
-          }
-     }
+    clock_t waiting = clock() + (time * CLOCKS_PER_SEC); 
+    while(clock() < waiting);
 }
