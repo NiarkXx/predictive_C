@@ -122,7 +122,8 @@ void typeSMSPredictive()
           printf("%s", currentWord);
           if(searchSpace)
           {
-               
+               strcat(smsArray, currentWord);
+               currentWord[0] = "\0";
           }
           if(searchEnter)
           {
@@ -187,6 +188,7 @@ void readInput(char *string)
      {
           if(position=strchr(string,'\n'))
           *position='\0';
+          strcat(currentWord, string);
      }
      else
           cleanBuffer();
