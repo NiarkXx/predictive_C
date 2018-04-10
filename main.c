@@ -112,7 +112,7 @@ void typeSMSPredictive()
 
      while(send == false)
      {
-          attendre(5);
+          wait(5);
           readInput(&saisie);
           printf("1) Word 1\n" );
           printf("2) Word 2\n" );
@@ -158,8 +158,8 @@ void readInput(char *string)
 		cleanBuffer();
 }
 
-void attendre(float temps)
+void wait(float time)
 {
-    clock_t attente = clock() + (temps * CLOCKS_PER_SEC); 
-    while(clock() < attente);
+    clock_t waiting = clock() + (time * CLOCKS_PER_SEC); 
+    while(clock() < waiting);
 }
