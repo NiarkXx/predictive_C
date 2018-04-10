@@ -167,6 +167,17 @@ bool searchEnter(char *string)
      return value;
 }
 
+bool searchBackSlash(char *string)
+{
+     bool value=false;
+     for(int i=0;i<strlen(string);i++)
+     {
+          if(string[i]=='/')
+               value= true;
+     }
+     return value;
+}
+
 void readInput(char *string)
 {
 	char *position=NULL;
