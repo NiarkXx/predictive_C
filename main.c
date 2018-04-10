@@ -28,7 +28,7 @@ void createDictionnary( char nameDictionnary[], bool typeOfDic);
 //----------------- GLOBALS -----------------
 
 
-bool enablePredictive =false;
+bool enablePredictive = false;
 
 
 //----------------- MAIN -----------------
@@ -107,10 +107,13 @@ void typeSMSPredictive()
 {
      int input=0;
      bool send=false;
-
+     char *saisie;
+     printf("Entrez votre SMS\n");
 
      while(send == false)
      {
+          attendre(5);
+          readInput(&saisie);
           printf("1) Word 1\n" );
           printf("2) Word 2\n" );
           printf("3) Word 3\n" );
@@ -121,7 +124,7 @@ void typeSMSPredictive()
           switch (input) {
                case 1:
                     break;
-               case 2:
+               case 2: 
                     break;
                case 3:
                     break;
@@ -157,6 +160,6 @@ void readInput(char *string)
 
 void attendre(float temps)
 {
-    clock_t attente=clock()+(temps*CLOCKS_PER_SEC); 
-    while(clock()<attente);
+    clock_t attente = clock() + (temps * CLOCKS_PER_SEC); 
+    while(clock() < attente);
 }
