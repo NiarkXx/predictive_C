@@ -8,63 +8,88 @@
 
 //void readWithEvent(void);
 //void createWindow(void);
-bool searchEnter(char *string);
-bool searchBackSlash(char *string);
-bool searchSpace(char *string);
+// bool searchEnter(char *string);
+// bool searchBackSlash(char *string);
+// bool searchSpace(char *string);
 
 int main(int argc, char const *argv[]) {
 
-     char sentence[20] ="Jesuisunephrase";
-     bool test;
+     // char sentence[20] ="Jesuisunephrase";
+     // bool test;
      //test=searchEnter(sentence);
      //test=searchBackSlash(sentence);
-     test=searchSpace(sentence);
-
-
-     if(test==true)
-          printf("True\n" );
-     else if(test==false)
-          printf("false\n" );
-     else
-          printf("Error\n" );
+     // test=searchSpace(sentence);
+     //
+     //
+     // if(test==true)
+     //      printf("True\n" );
+     // else if(test==false)
+     //      printf("false\n" );
+     // else
+     //      printf("Error\n" );
 
      return EXIT_SUCCESS;
 }
 
-bool searchEnter(char *string)
-{
-     bool value=false;
+// bool searchEnter(char *string)
+// {
+//      bool value=false;
+//
+//      for(int i=0;i<strlen(string);i++)
+//      {
+//           if(string[i]=='\n')
+//                value= true;
+//      }
+//      return value;
+// }
+//
+// bool searchBackSlash(char *string)
+// {
+//      bool value=false;
+//      for(int i=0;i<strlen(string);i++)
+//      {
+//           if(string[i]=='/')
+//                value= true;
+//      }
+//      return value;
+// }
+//
+// bool searchSpace(char *string)
+// {
+//      bool value=false;
+//      for(int i=0;i<strlen(string);i++)
+//      {
+//           if(string[i]==' ')
+//                value= true;
+//      }
+//      return value;
+// }
 
-     for(int i=0;i<strlen(string);i++)
-     {
-          if(string[i]=='\n')
-               value= true;
+
+void writeWordIntoDic(char *string)
+{
+     FILE *file=fopen("dictionnaire.txt","w");
+
+     if (file!=NULL) {
+
+
      }
-     return value;
+     printf("Error : Can't read the file\n");
+     fclose(file);
 }
 
-bool searchBackSlash(char *string)
+void ecritureFichier(char string[])
 {
-     bool value=false;
-     for(int i=0;i<strlen(string);i++)
-     {
-          if(string[i]=='/')
-               value= true;
-     }
-     return value;
-}
+	FILE *file=fopen("dictionnaire.txt","w");
 
-bool searchSpace(char *string)
-{
-     bool value=false;
-     for(int i=0;i<strlen(string);i++)
-     {
-          if(string[i]==' ')
-               value= true;
-     }
-     return value;
-}
 
+	if (file!=NULL) {
+
+
+	}
+	printf("Error : Can't read the file\n");
+	fclose(file);
+}
 
 //-------------------------------------------------------
 // void createWindow()
