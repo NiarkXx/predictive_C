@@ -156,6 +156,18 @@ void readInput(char *string)
 }
 
 
+bool searchEnter(char *string)
+{
+     for(int i=0;i<strlen(string);i++)
+     {
+          if((int)string[i]==13)
+               return true;
+          else
+               return false;
+     }
+
+}
+
 void readWithEvent()
 {
      bool continu=true;
