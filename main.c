@@ -29,6 +29,8 @@ void createDictionnary( char nameDictionnary[], bool typeOfDic);
 
 
 bool enablePredictive =false;
+char smsArray[MAX_LENGTH];
+char currentWord[MAX_LENGTH_WORD];
 
 
 //----------------- MAIN -----------------
