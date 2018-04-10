@@ -11,7 +11,7 @@
 bool searchEnter(char *string);
 int main(int argc, char const *argv[]) {
 
-     char sentence[20] ="Je suis une \n phrase";
+     char sentence[20] ="Je suis une  phrase";
      bool test;
      test=searchEnter(sentence);
      if(test==true)
@@ -26,15 +26,27 @@ int main(int argc, char const *argv[]) {
 
 bool searchEnter(char *string)
 {
+     bool value=false;
+
      for(int i=0;i<strlen(string);i++)
      {
           if(string[i]=='\n')
-               return true;
-          else
-               return false;
+               value= true;
      }
+     return value;
 }
 
+// bool searchBackSlash(char *string)
+// {
+//      for(int i=0;i<strlen(string);i++)
+//      {
+//           if((int)string[i]==32)
+//                value= true;
+//           else
+//                value =false;
+//      }
+//
+// }
 
 
 //-------------------------------------------------------
