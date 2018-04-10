@@ -20,6 +20,7 @@ ISMIN 1A
 typedef struct _Mot
 {
 	char lemot[Taille_max];
+	int occur;
 	struct _Mot *suiv;
 	struct _Mot *prec;
 }Mot;
@@ -79,14 +80,42 @@ Mot** lecture_fichier()
 	Mot **tab = creation();
 	FILE *fp = fopen("dictionnaire.txt", "r");
 	char monmot[Taille_max];
-	while (fscanf(fp, "%s \n", monmot) != EOF)
+	while (fscanf(fp, "%s %d \n", monmot) != EOF)
 	{	
 		insertion(tab, monmot);
 	}
 	return tab;
 }
 
-void recherche(Mot **tab, char motatrouver[Taille_max])
+Mot* recherche_pour_ajout(Mot **tab, char motatrouver[Taille_max])
+{
+	int trouve = 0;
+	unsigned long long placement = hachage(motatrouver);
+	Mot* ptr = tab[placement];
+	while (ptr != NULL && trouve != 1)
+	{
+		if (strcmp(ptr -> lemot, motatrouver) == 0)
+		{
+			trouve = 1;
+			ptr -> occur++;
+		}
+		ptr = ptr -> suiv;
+	}
+	ptr = tab[placement];
+	if (trouve != 1)
+	{
+		Mot *maillon = malloc(sizeof(Mot));
+		strcpy(maillon -> lemot, monmot);
+		while (ptr -> suiv != NULL)
+		{
+			ptr = ptr -> suiv;
+		}
+		ptr -> suiv = maillon;
+		maillon -> prec = ptr;
+	}
+}
+
+Mot* recherche(Mot **tab, char motatrouver[Taille_max])
 {
 	int trouve = 0;
 	unsigned long long placement = hachage(motatrouver);
@@ -101,10 +130,22 @@ void recherche(Mot **tab, char motatrouver[Taille_max])
 	}
 	if (trouve == 1)
 	{
-		printf("Le mot est dans le dictionnaire \n");
+		return ptr -> prec;
 	}
 	else 
 	{
 		printf("Le mot n'est pas dans le dictionnaire \n");
 	}
+}
+
+Mot** lecture_fichier()
+{
+	Mot **tab = creation();
+	FILE *fp = fopen("dictionnaire.txt", "r");
+	char monmot[Taille_max];
+	while (fscanf(fp, "%s \n", monmot) != EOF)
+	{	
+		insertion(tab, monmot);
+	}
+	return tab;
 }
