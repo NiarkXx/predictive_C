@@ -11,11 +11,7 @@
 
 
 //----------------- STRUCTURES -----------------
-typedef struct _Dictionnary{
-     char word[MAX_LENGTH];
-     int frequency; //Utile seulement pour
-     struct _Dictionnary *next;
-}Dictionnary;
+
 
 
 //----------------- PROTOTYPES -----------------
@@ -32,9 +28,6 @@ void createDictionnary( char nameDictionnary[], bool typeOfDic);
 
 
 bool enablePredictive =false;
-
-Dictionnary *frenchDic=NULL;
-Dictionnary *predictiveDic=NULL;
 
 
 //----------------- MAIN -----------------
@@ -159,73 +152,4 @@ void readInput(char *string)
      }
 	else
 		cleanBuffer();
-}
-
-// Mode 1 : frenchDic
-//Mode 2 : predictiveDic
-void createDictionnary(char nameDictionnary[], bool typeOfDic)
-{
-     Dictionnary *newWord =(Dictionnary *)malloc(sizeof(Dictionnary));
-
-     FILE *file = fopen(nameDictionnary,"r");
-     char word[MAX_LENGTH_WORD];
-     int frequency;
-
-     if(file !=NULL)
-     {
-          if(typeOfDic == 1)
-          {
-               while(fscanf(file,"%s",word)==1)
-               {
-                    strcpy(newWord->word,word);
-                    newWord->next=frenchDic;
-                    frenchDic=newWord;
-               }
-          }
-          else if(typeOfDic == 0)
-          {
-               while(fscanf(file,"%s %d",word, &frequency)==2)
-               {
-                    strcpy(newWord->word,word);
-                    newWord->frequency =frequency;
-                    newWord->next=predictiveDic;
-                    predictiveDic=newWord;
-               }
-          }
-          else
-               printf("ERROR : Not a suitable type of dictionnary\n" );
-     }
-     else
-          printf("ERROR: Can't open the file : %s \n",nameDictionnary );
-     fclose(file);
-}
-
-
-// Mode 1 : frenchDic
-//Mode 2 : predictiveDic
-void displayDictionnary(bool typeOfDic)
-{
-     //Dictionnary *word2Display =(Dictionnary *)malloc(sizeof(Dictionnary));
-
-     if(typeOfDic == 1)
-     {
-          Dictionnary *word2Display=frenchDic;
-          while(word2Display!=NULL)
-          {
-               printf("%s\n",word2Display->word );
-               word2Display=word2Display->next;
-          }
-     }
-     else if(typeOfDic == 0)
-     {
-          Dictionnary *word2Display=predictiveDic;
-          while(word2Display!=NULL)
-          {
-               printf("%s, %d\n",word2Display->word,word2Display->frequency );
-               word2Display=word2Display->next;
-          }
-     }
-     else
-          printf("ERROR : Not a suitable type of dictionnary\n" );
-
 }
