@@ -112,7 +112,6 @@ void typeSMSPredictive()
      int input=0;
      bool send=false;
      char *saisie;
-     char *wordAfter;
      printf("Type your SMS\n");
 
      while(send == false)
@@ -126,7 +125,7 @@ void typeSMSPredictive()
           while(searchSpace(currentWord, wordAfter))
           {
                strcat(smsArray, currentWord);
-               memcpy(currentWord, wordAfter, strlen(wordAfter)+1);
+               currentWord[0] = '\0';
           }
           if(searchEnter)
           {
