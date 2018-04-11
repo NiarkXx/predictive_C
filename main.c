@@ -3,6 +3,8 @@
 #include <stdbool.h>
 #include <string.h>
 #include <time.h>
+#include "bibli_doc.h"
+#include "bibli_pred.h"
 
 //----------------- CONSTANTS -----------------
 
@@ -22,8 +24,11 @@ void typeSMSNonPredictive(void);
 void selectMode(void);
 void cleanBuffer(void);
 void readInput(char *string);
-void displayDictionnary(bool typeOfDic );
-void createDictionnary( char nameDictionnary[], bool typeOfDic);
+bool searchEnter(char *string);
+bool searchSpace(char *string);
+bool searchBackSlash(char *string);
+void wait(float time);
+void writeWordIntoDic(char string[]); 
 
 //----------------- GLOBALS -----------------
 
@@ -36,8 +41,7 @@ char currentWord[MAX_LENGTH_WORD];
 //----------------- MAIN -----------------
 int main(int argc, char const *argv[]) {
 
-     createDictionnary("french_dic.txt",1);
-     displayDictionnary(1);
+
 
      //menu();
 
@@ -94,20 +98,17 @@ void typeSMSNonPredictive()
 
 void selectMode()
 {
-     switch (enablePredictive) {
-          case true:
+     if (enablePredictive) {
                typeSMSPredictive();
                printf("typeSMSPredictive\n" );
-               break;
-          case false:
-               typeSMSNonPredictive();
-               break;
      }
+     else
+               typeSMSNonPredictive();
 }
 
 void typeSMSPredictive()
 {
-     system("clear")
+     system("clear");
      int input=0;
      bool send=false;
      char *saisie;
@@ -116,13 +117,14 @@ void typeSMSPredictive()
      while(send == false)
      {
           wait(1);
-          readInput(&saisie);
+          readInput(saisie);
           printf("1) Word 1   2) Word 2   3) Word 3\n" );
           printf("%s", smsArray);
           printf("%s", currentWord);
           if(searchSpace)
           {
-               
+               strcat(smsArray, currentWord);
+               currentWord[0] = '\0';
           }
           if(searchEnter)
           {
@@ -141,7 +143,7 @@ void typeSMSPredictive()
                case 3:
                     break;
                default:
-                    printf("ERROR")
+                    printf("ERROR");
                     break;
                }
           }
@@ -187,13 +189,65 @@ void readInput(char *string)
      {
           if(position=strchr(string,'\n'))
           *position='\0';
+          strcat(currentWord, string);
      }
      else
           cleanBuffer();
+}
+
+bool searchSpace(char *string)
+{
+     bool value=false;
+     for(int i=0;i<strlen(string);i++)
+    {
+          if(string[i]==' ')
+               value= true;
+    }
+   return value;
 }
 
 void wait(float time)
 {
     clock_t waiting = clock() + (time * CLOCKS_PER_SEC); 
     while(clock() < waiting);
+}
+
+void writeWordIntoDic(char string[])
+{
+     FILE *file=fopen("dictionnaire.txt","r+");
+     int cursor=0;
+     char word[MAX_LENGTH];
+     FILE *fileCopy=fopen("dictionnaire_tmp.txt","w+");
+     bool done=false;
+
+     if (file!=NULL && fileCopy!=NULL) {
+          rewind(file);
+ 
+          while(fscanf(file, "%s", word)!=EOF)
+          //while(fscanf(file, "%s", word)==1)
+          {
+               if(done!=true)
+               {
+                    if(strcoll(word,string)<0)
+                    {
+                         fprintf(fileCopy, "%s\n",word );
+                    }
+                    else
+                    {
+                         fprintf(fileCopy,"%s\n",string);
+                         fprintf(fileCopy,"%s\n",word);
+                         done=true;
+                    }
+               }
+               else
+                    fprintf(fileCopy,"%s\n",word);
+          }
+     }
+     else
+          printf("Error : Can't read the file\n");
+ 
+     fclose(file);
+     fclose(fileCopy);
+     remove("dictionnaire.txt");
+     rename("dictionnaire_tmp.txt","dictionnaire.txt");
 }

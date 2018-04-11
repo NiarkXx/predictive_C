@@ -12,7 +12,9 @@ ISMIN 1A
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
+#include <time.h>
 
 #define Taille_dic 22740
 #define Taille_max 30
