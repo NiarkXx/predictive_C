@@ -131,10 +131,6 @@ void typeSMSPredictive()
           {
                send = true;
           }
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
           if(searchBackSlash)
           {
                scanf("%d",&input );
@@ -192,14 +188,7 @@ void readInput(char *string)
      if (fgets(string,MAX_LENGTH+1,stdin)!=NULL)
      {
           if(position=strchr(string,'\n'))
-<<<<<<< Updated upstream
-               *position='\0';
-               
-=======
-          {
-               *position='\0';
-          }
->>>>>>> Stashed changes
+
           strcat(currentWord, string);
      }
      else
