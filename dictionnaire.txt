@@ -1,11 +1,15 @@
-Abaque
-Arbre
-Batiment
-Breloque
-Brocante
-Brulant
-PTDR
-Ptdrrr
-Succes
-Xerxes
-Xylophone
+Abaque 0
+Accident 1
+Arbre 1
+Batiment 0
+Breloque 0
+Brocante 0
+Brulant 5
+Carrie 1
+Carriere 1
+Comite 0
+PTDR 0
+Ptdrrr 0
+Succes 0
+Xerxes 2
+Xylophone 0

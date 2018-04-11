@@ -15,12 +15,12 @@
 // bool searchBackSlash(char *string);
 // bool searchSpace(char *string);
 void writeWordIntoDic(char string[]);
-bool searchSpace(char *currentWord, char* wordAfter );
+//bool searchSpace(char *currentWord, char* wordAfter );
 
 int main(int argc, char const *argv[]) {
-     char current[MAX_LENGTH_WORD]="Je suis une phrase";
-     char nextWord[MAX_LENGTH_WORD];
-     bool spaceExist;
+     // char current[MAX_LENGTH_WORD]="Je suis une phrase";
+     // char nextWord[MAX_LENGTH_WORD];
+     // bool spaceExist;
      // char sentence[20] ="Jesuisunephrase";
      // bool test;
      //test=searchEnter(sentence);
@@ -34,11 +34,11 @@ int main(int argc, char const *argv[]) {
      //      printf("false\n" );
      // else
      //      printf("Error\n" );
-     //writeWordIntoDic("Ptdrrr");
+     writeWordIntoDic("Accident");
 
-     spaceExist=searchSpace(current,nextWord);
+     //spaceExist=searchSpace(current,nextWord);
 
-     printf("Bool : %d \n Current : %s \n NextWord : %s \n",spaceExist,current, nextWord );
+     //printf("Bool : %d \n Current : %s \n NextWord : %s \n",spaceExist,current, nextWord );
      return EXIT_SUCCESS;
 }
 
@@ -98,17 +98,17 @@ void readSMS()
 {
      FILE *fileToRead=fopen("smsProf.txt","r");
      FILE *fileToWrite=fopen("dictionnaire.txt","");
-     char *wordOne[MAX_LENGTH_WORD];
-     char *wordTwo[MAX_LENGTH_WORD];
+     char wordOne[MAX_LENGTH_WORD];
+     char wordTwo[MAX_LENGTH_WORD];
      int occurence=0;
 
      if(fileToRead!=NULL)
      {
-          while(fscanf(file,"%s\n",wordOne)==1)
+          while(fscanf(fileToRead,"%s\n",wordOne)==1)
           {
-               while(fscanf(file,"%s",wordTwo)==1)
+               while(fscanf(fileToRead,"%s",wordTwo)==1)
                {
-                    if(strcmp(wordOne,wordTwo)==1)
+                    if(strcmp(wordOne,wordTwo)==0)
                          occurence++;
                }
 
@@ -116,11 +116,62 @@ void readSMS()
           }
 
 
+
      }
      else
           printf("Error : Can't open the file\n");
 
      fclose(fileToRead);
+}
+
+
+
+void writeWordIntoDic(char string[])
+{
+     FILE *file=fopen("dictionnaire.txt","r+");
+     int cursor=0;
+     char word[MAX_LENGTH];
+     FILE *fileCopy=fopen("dictionnaire_tmp.txt","w+");
+     bool done=false;
+     int occurence=0;
+
+     if (file!=NULL && fileCopy!=NULL) {
+          rewind(file);
+
+          while(fscanf(file, "%s %d", word, &occurence)!=EOF)
+          {
+               if(done!=true)
+               {
+                    if(strcoll(word,string)<0)
+                    {
+                         fprintf(fileCopy, "%s %d\n",word,occurence );
+                    }
+                    else if(strcoll(word,string)==0)
+                    {
+                         occurence++;
+                         fprintf(fileCopy,"%s %d\n",word, occurence);
+                         done=true;
+                    }
+                    else
+                    {
+                         fprintf(fileCopy,"%s %d\n",string,0);
+                         fprintf(fileCopy,"%s %d\n",word,occurence);
+                         done=true;
+                    }
+               }
+               else
+               {
+                    fprintf(fileCopy,"%s %d\n",word,occurence);
+               }
+          }
+     }
+     else
+          printf("Error : Can't read the file\n");
+
+     fclose(file);
+     fclose(fileCopy);
+     remove("dictionnaire.txt");
+     rename("dictionnaire_tmp.txt","dictionnaire.txt");
 }
 
 
