@@ -25,7 +25,7 @@ void selectMode(void);
 void cleanBuffer(void);
 void readInput(char *string);
 bool searchEnter(char *string);
-bool searchSpace(char *string);
+bool searchSpace(char *currentWord, char *wordAfter );
 bool searchBackSlash(char *string);
 void wait(float time);
 void writeWordIntoDic(char string[]); 
@@ -195,15 +195,32 @@ void readInput(char *string)
           cleanBuffer();
 }
 
-bool searchSpace(char *string)
+bool searchSpace(char *currentWord, char *wordAfter )
 {
      bool value=false;
-     for(int i=0;i<strlen(string);i++)
-    {
-          if(string[i]==' ')
-               value= true;
-    }
-   return value;
+     int counter=0;
+     bool done=false;
+     for(int i=0;i<strlen(currentWord);i++)
+     {
+          if(currentWord[i]==' ')
+          {
+               value=true;
+          }
+
+          if(value && done==false)
+          {
+               for(int j=i;j<strlen(currentWord);j++)
+               {
+                    done=true;
+                    wordAfter[counter]=currentWord[j];
+                    counter++;
+
+               }
+          }
+     }
+
+     return value;
+
 }
 
 void wait(float time)
