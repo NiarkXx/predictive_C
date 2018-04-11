@@ -91,7 +91,7 @@ void typeSMSNonPredictive()
      char inputText[MAX_LENGTH];
 
      printf("Type your text : \n" );
-     cleanBuffer();
+    // cleanBuffer();
      readInput(inputText);
 }
 
@@ -112,11 +112,13 @@ void typeSMSPredictive()
      int input=0;
      bool send=false;
      char *saisie;
-     printf("Type your SMS\n");
+     char *wordAfter;
+     
 
      while(send == false)
      {
-          //wait(1);
+          system("clear");
+          printf("Type your SMS\n");
           printf("ca marche \n");
           readInput(saisie);
           printf("1) Word 1   2) Word 2   3) Word 3\n" );
@@ -184,12 +186,9 @@ bool searchBackSlash(char *string)
 
 void readInput(char *string)
 {
-     char *position=NULL;
-     if (fgets(string,MAX_LENGTH+1,stdin)!=NULL)
+     char text[MAX_LENGTH_WORD];
+     if (scanf("%30s", text) != 0)
      {
-          if(position=strchr(string,'\n'))
-                *position='\0';
-
           strcat(currentWord, string);
      }
      else
