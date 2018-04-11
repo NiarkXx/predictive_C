@@ -3,6 +3,8 @@
 #include <stdbool.h>
 #include <string.h>
 #include <time.h>
+#include "bibli_doc.h"
+#include "bibli_pred.h"
 
 //----------------- CONSTANTS -----------------
 
@@ -24,7 +26,7 @@ void cleanBuffer(void);
 void readInput(char *string);
 bool searchEnter(char *string);
 bool searchSpace(char *string);
-bool searchEnter(char *string);
+bool searchBackSlash(char *string);
 void wait(float time);
 void writeWordIntoDic(char string[]); 
 
@@ -96,20 +98,17 @@ void typeSMSNonPredictive()
 
 void selectMode()
 {
-     switch (enablePredictive) {
-          case true:
+     if (enablePredictive) {
                typeSMSPredictive();
                printf("typeSMSPredictive\n" );
-               break;
-          case false:
-               typeSMSNonPredictive();
-               break;
      }
+     else
+               typeSMSNonPredictive();
 }
 
 void typeSMSPredictive()
 {
-     system("clear")
+     system("clear");
      int input=0;
      bool send=false;
      char *saisie;
@@ -118,14 +117,14 @@ void typeSMSPredictive()
      while(send == false)
      {
           wait(1);
-          readInput(&saisie);
+          readInput(saisie);
           printf("1) Word 1   2) Word 2   3) Word 3\n" );
           printf("%s", smsArray);
           printf("%s", currentWord);
           if(searchSpace)
           {
                strcat(smsArray, currentWord);
-               currentWord[0] = "\0";
+               currentWord[0] = '\0';
           }
           if(searchEnter)
           {
@@ -144,7 +143,7 @@ void typeSMSPredictive()
                case 3:
                     break;
                default:
-                    printf("ERROR")
+                    printf("ERROR");
                     break;
                }
           }
@@ -220,7 +219,7 @@ void writeWordIntoDic(char string[])
      char word[MAX_LENGTH];
      FILE *fileCopy=fopen("dictionnaire_tmp.txt","w+");
      bool done=false;
- 
+
      if (file!=NULL && fileCopy!=NULL) {
           rewind(file);
  
