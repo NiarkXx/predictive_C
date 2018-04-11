@@ -5,6 +5,9 @@
 //#include <SDL/SDL.h>
 
 #define MAX_LENGTH 300
+#define MAX_LENGTH_WORD 50
+
+
 
 //void readWithEvent(void);
 //void createWindow(void);
@@ -12,9 +15,12 @@
 // bool searchBackSlash(char *string);
 // bool searchSpace(char *string);
 void writeWordIntoDic(char string[]);
+bool searchSpace(char *currentWord, char* wordAfter );
 
 int main(int argc, char const *argv[]) {
-
+     char current[MAX_LENGTH_WORD]="Je suis une phrase";
+     char nextWord[MAX_LENGTH_WORD];
+     bool spaceExist;
      // char sentence[20] ="Jesuisunephrase";
      // bool test;
      //test=searchEnter(sentence);
@@ -28,7 +34,11 @@ int main(int argc, char const *argv[]) {
      //      printf("false\n" );
      // else
      //      printf("Error\n" );
-     writeWordIntoDic("Ptdrrr");
+     //writeWordIntoDic("Ptdrrr");
+
+     spaceExist=searchSpace(current,nextWord);
+
+     printf("Bool : %d \n Current : %s \n NextWord : %s \n",spaceExist,current, nextWord );
      return EXIT_SUCCESS;
 }
 
@@ -55,59 +65,76 @@ int main(int argc, char const *argv[]) {
 //      return value;
 // }
 //
-// bool searchSpace(char *string)
-// {
-//      bool value=false;
-//      for(int i=0;i<strlen(string);i++)
-//      {
-//           if(string[i]==' ')
-//                value= true;
-//      }
-//      return value;
-// }
-
-
-
-
-void writeWordIntoDic(char string[])
+bool searchSpace(char *currentWord, char *wordAfter )
 {
-	FILE *file=fopen("dictionnaire.txt","r+");
-     int cursor=0;
-     char word[MAX_LENGTH];
-     FILE *fileCopy=fopen("dictionnaire_tmp.txt","w+");
+     bool value=false;
+     int counter=0;
      bool done=false;
-
-	if (file!=NULL && fileCopy!=NULL) {
-          rewind(file);
-
-          while(fscanf(file, "%s", word)!=EOF)
-          //while(fscanf(file, "%s", word)==1)
+     for(int i=0;i<strlen(currentWord);i++)
+     {
+          if(currentWord[i]==' ')
           {
-               if(done!=true)
-               {
-                    if(strcoll(word,string)<0)
-                    {
-                         fprintf(fileCopy, "%s\n",word );
-                    }
-                    else
-                    {
-                         fprintf(fileCopy,"%s\n",string);
-                         fprintf(fileCopy,"%s\n",word);
-                         done=true;
-                    }
-               }
-               else
-                    fprintf(fileCopy,"%s\n",word);
+               value=true;
           }
-	}
-     else
-	    printf("Error : Can't read the file\n");
 
-	fclose(file);
-     fclose(fileCopy);
-     remove("dictionnaire.txt");
-     rename("dictionnaire_tmp.txt","dictionnaire.txt");
+          if(value && done==false)
+          {
+               for(int j=i;j<strlen(currentWord);j++)
+               {
+                    done=true;
+                    wordAfter[counter]=currentWord[j];
+                    counter++;
+
+               }
+          }
+     }
+
+     return value;
+
 }
+
+
+
+
+// void writeWordIntoDic(char string[])
+// {
+// 	FILE *file=fopen("dictionnaire.txt","r+");
+//      int cursor=0;
+//      char word[MAX_LENGTH];
+//      FILE *fileCopy=fopen("dictionnaire_tmp.txt","w+");
+//      bool done=false;
+//
+// 	if (file!=NULL && fileCopy!=NULL) {
+//           rewind(file);
+//
+//           while(fscanf(file, "%s", word)!=EOF)
+//           //while(fscanf(file, "%s", word)==1)
+//           {
+//                if(done!=true)
+//                {
+//                     if(strcoll(word,string)<0)
+//                     {
+//                          fprintf(fileCopy, "%s\n",word );
+//                     }
+//                     else
+//                     {
+//                          fprintf(fileCopy,"%s\n",string);
+//                          fprintf(fileCopy,"%s\n",word);
+//                          done=true;
+//                     }
+//                }
+//                else
+//                     fprintf(fileCopy,"%s\n",word);
+//           }
+// 	}
+//      else
+// 	    printf("Error : Can't read the file\n");
+//
+// 	fclose(file);
+//      fclose(fileCopy);
+//      remove("dictionnaire.txt");
+//      rename("dictionnaire_tmp.txt","dictionnaire.txt");
+// }
 
 //-------------------------------------------------------
 // void createWindow()
