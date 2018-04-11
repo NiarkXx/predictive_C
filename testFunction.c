@@ -18,7 +18,7 @@ void writeWordIntoDic(char string[]);
 bool searchSpace(char *currentWord, char* wordAfter );
 
 int main(int argc, char const *argv[]) {
-     char current[MAX_LENGTH_WORD]="Jesuisune phrase";
+     char current[MAX_LENGTH_WORD]="Je suis une phrase";
      char nextWord[MAX_LENGTH_WORD];
      bool spaceExist;
      // char sentence[20] ="Jesuisunephrase";
