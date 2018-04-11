@@ -4,55 +4,137 @@
 #include <string.h>
 //#include <SDL/SDL.h>
 
+#define MAX_LENGTH 300
+#define MAX_LENGTH_WORD 50
+
 
 
 //void readWithEvent(void);
 //void createWindow(void);
-bool searchEnter(char *string);
-bool searchBackSlash(char *string);
+// bool searchEnter(char *string);
+// bool searchBackSlash(char *string);
+// bool searchSpace(char *string);
+void writeWordIntoDic(char string[]);
+bool searchSpace(char *currentWord, char* wordAfter );
 
 int main(int argc, char const *argv[]) {
-
-     char sentence[20] ="Je suis une  phrase";
-     bool test;
+     char current[MAX_LENGTH_WORD]="Je suis une phrase";
+     char nextWord[MAX_LENGTH_WORD];
+     bool spaceExist;
+     // char sentence[20] ="Jesuisunephrase";
+     // bool test;
      //test=searchEnter(sentence);
-     test=searchBackSlash(sentence);
+     //test=searchBackSlash(sentence);
+     // test=searchSpace(sentence);
+     //
+     //
+     // if(test==true)
+     //      printf("True\n" );
+     // else if(test==false)
+     //      printf("false\n" );
+     // else
+     //      printf("Error\n" );
+     //writeWordIntoDic("Ptdrrr");
 
-     if(test==true)
-          printf("True\n" );
-     else if(test==false)
-          printf("false\n" );
-     else
-          printf("Error\n" );
+     spaceExist=searchSpace(current,nextWord);
 
+     printf("Bool : %d \n Current : %s \n NextWord : %s \n",spaceExist,current, nextWord );
      return EXIT_SUCCESS;
 }
 
-bool searchEnter(char *string)
+// bool searchEnter(char *string)
+// {
+//      bool value=false;
+//
+//      for(int i=0;i<strlen(string);i++)
+//      {
+//           if(string[i]=='\n')
+//                value= true;
+//      }
+//      return value;
+// }
+//
+// bool searchBackSlash(char *string)
+// {
+//      bool value=false;
+//      for(int i=0;i<strlen(string);i++)
+//      {
+//           if(string[i]=='/')
+//                value= true;
+//      }
+//      return value;
+// }
+//
+bool searchSpace(char *currentWord, char *wordAfter )
 {
      bool value=false;
-
-     for(int i=0;i<strlen(string);i++)
+     int counter=0;
+     bool done=false;
+     for(int i=0;i<strlen(currentWord);i++)
      {
-          if(string[i]=='\n')
-               value= true;
+          if(currentWord[i]==' ')
+          {
+               value=true;
+          }
+
+          if(value && done==false)
+          {
+               for(int j=i;j<strlen(currentWord);j++)
+               {
+                    done=true;
+                    wordAfter[counter]=currentWord[j];
+                    counter++;
+
+               }
+          }
      }
+
      return value;
+
 }
 
-bool searchBackSlash(char *string)
-{
-     bool value=false;
-     for(int i=0;i<strlen(string);i++)
-     {
-          if(string[i]=='/')
-               value= true;
-     }
-     return value;
-}
 
 
 
+// void writeWordIntoDic(char string[])
+// {
+// 	FILE *file=fopen("dictionnaire.txt","r+");
+//      int cursor=0;
+//      char word[MAX_LENGTH];
+//      FILE *fileCopy=fopen("dictionnaire_tmp.txt","w+");
+//      bool done=false;
+//
+// 	if (file!=NULL && fileCopy!=NULL) {
+//           rewind(file);
+//
+//           while(fscanf(file, "%s", word)!=EOF)
+//           //while(fscanf(file, "%s", word)==1)
+//           {
+//                if(done!=true)
+//                {
+//                     if(strcoll(word,string)<0)
+//                     {
+//                          fprintf(fileCopy, "%s\n",word );
+//                     }
+//                     else
+//                     {
+//                          fprintf(fileCopy,"%s\n",string);
+//                          fprintf(fileCopy,"%s\n",word);
+//                          done=true;
+//                     }
+//                }
+//                else
+//                     fprintf(fileCopy,"%s\n",word);
+//           }
+// 	}
+//      else
+// 	    printf("Error : Can't read the file\n");
+//
+// 	fclose(file);
+//      fclose(fileCopy);
+//      remove("dictionnaire.txt");
+//      rename("dictionnaire_tmp.txt","dictionnaire.txt");
+// }
 
 //-------------------------------------------------------
 // void createWindow()

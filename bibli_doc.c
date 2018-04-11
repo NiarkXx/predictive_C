@@ -110,16 +110,3 @@ void recherche(Mot **tab, char motatrouver[Taille_max])
 		printf("Le mot n'est pas dans le dictionnaire \n");
 	}
 }
-
-void ecritureFichier(char string[])
-{
-	FILE *file=fopen("dictionnaire.txt","w");
-
-
-	if (file!=NULL) {
-
-
-	}
-	printf("Error : Can't read the file\n");
-	fclose(file);
-}
