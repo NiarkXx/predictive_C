@@ -94,6 +94,11 @@ bool searchSpace(char *currentWord, char *wordAfter )
 }
 
 
+void readSMS()
+{
+     FILE *file=fopen("","");
+}
+
 
 
 // void writeWordIntoDic(char string[])
