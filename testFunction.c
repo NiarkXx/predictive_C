@@ -65,38 +65,62 @@ int main(int argc, char const *argv[]) {
 //      return value;
 // }
 //
-bool searchSpace(char *currentWord, char *wordAfter )
-{
-     bool value=false;
-     int counter=0;
-     bool done=false;
-     for(int i=0;i<strlen(currentWord);i++)
-     {
-          if(currentWord[i]==' ')
-          {
-               value=true;
-          }
-
-          if(value && done==false)
-          {
-               for(int j=i;j<strlen(currentWord);j++)
-               {
-                    done=true;
-                    wordAfter[counter]=currentWord[j];
-                    counter++;
-
-               }
-          }
-     }
-
-     return value;
-
-}
+// bool searchSpace(char *currentWord, char *wordAfter )
+// {
+//      bool value=false;
+//      int counter=0;
+//      bool done=false;
+//      for(int i=0;i<strlen(currentWord);i++)
+//      {
+//           if(currentWord[i]==' ')
+//           {
+//                value=true;
+//           }
+//
+//           if(value && done==false)
+//           {
+//                for(int j=i;j<strlen(currentWord);j++)
+//                {
+//                     done=true;
+//                     wordAfter[counter]=currentWord[j];
+//                     counter++;
+//
+//                }
+//           }
+//      }
+//
+//      return value;
+//
+// }
 
 
 void readSMS()
 {
-     FILE *file=fopen("","");
+     FILE *fileToRead=fopen("smsProf.txt","r");
+     FILE *fileToWrite=fopen("dictionnaire.txt","");
+     char *wordOne[MAX_LENGTH_WORD];
+     char *wordTwo[MAX_LENGTH_WORD];
+     int occurence=0;
+
+     if(fileToRead!=NULL)
+     {
+          while(fscanf(file,"%s\n",wordOne)==1)
+          {
+               while(fscanf(file,"%s",wordTwo)==1)
+               {
+                    if(strcmp(wordOne,wordTwo)==1)
+                         occurence++;
+               }
+
+
+          }
+
+
+     }
+     else
+          printf("Error : Can't open the file\n");
+
+     fclose(fileToRead);
 }
 
 

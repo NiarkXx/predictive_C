@@ -28,7 +28,7 @@ bool searchEnter(char *string);
 bool searchSpace(char *currentWord, char *wordAfter );
 bool searchBackSlash(char *string);
 void wait(float time);
-void writeWordIntoDic(char string[]); 
+void writeWordIntoDic(char string[]);
 
 //----------------- GLOBALS -----------------
 
@@ -130,7 +130,7 @@ void typeSMSPredictive()
           {
                send = true;
           }
-          
+
           if(searchBackSlash)
           {
                scanf("%d",&input );
@@ -138,7 +138,7 @@ void typeSMSPredictive()
                case 1:
 
                     break;
-               case 2: 
+               case 2:
                     break;
                case 3:
                     break;
@@ -188,7 +188,8 @@ void readInput(char *string)
      if (fgets(string,MAX_LENGTH+1,stdin)!=NULL)
      {
           if(position=strchr(string,'\n'))
-          *position='\0';
+               *position='\0';
+               
           strcat(currentWord, string);
      }
      else
@@ -225,7 +226,7 @@ bool searchSpace(char *currentWord, char *wordAfter )
 
 void wait(float time)
 {
-    clock_t waiting = clock() + (time * CLOCKS_PER_SEC); 
+    clock_t waiting = clock() + (time * CLOCKS_PER_SEC);
     while(clock() < waiting);
 }
 
@@ -239,7 +240,7 @@ void writeWordIntoDic(char string[])
 
      if (file!=NULL && fileCopy!=NULL) {
           rewind(file);
- 
+
           while(fscanf(file, "%s", word)!=EOF)
           //while(fscanf(file, "%s", word)==1)
           {
@@ -262,7 +263,7 @@ void writeWordIntoDic(char string[])
      }
      else
           printf("Error : Can't read the file\n");
- 
+
      fclose(file);
      fclose(fileCopy);
      remove("dictionnaire.txt");
