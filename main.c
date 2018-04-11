@@ -43,7 +43,7 @@ int main(int argc, char const *argv[]) {
 
 
 
-     //menu();
+     menu();
 
 
      return 0;
@@ -112,12 +112,13 @@ void typeSMSPredictive()
      int input=0;
      bool send=false;
      char *saisie;
-     char wordAfter;
+     char *wordAfter;
      printf("Type your SMS\n");
 
      while(send == false)
      {
-          wait(1);
+          //wait(1);
+          printf("ca marche \n");
           readInput(saisie);
           printf("1) Word 1   2) Word 2   3) Word 3\n" );
           printf("%s", smsArray);
@@ -125,13 +126,16 @@ void typeSMSPredictive()
           while(searchSpace(currentWord, wordAfter))
           {
                strcat(smsArray, currentWord);
-               currentWord[0] = wordAfter;
+               memcpy(currentWord, wordAfter, strlen(wordAfter)+1);
           }
           if(searchEnter)
           {
                send = true;
           }
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
           if(searchBackSlash)
           {
                scanf("%d",&input );
@@ -189,8 +193,14 @@ void readInput(char *string)
      if (fgets(string,MAX_LENGTH+1,stdin)!=NULL)
      {
           if(position=strchr(string,'\n'))
+<<<<<<< Updated upstream
                *position='\0';
                
+=======
+          {
+               *position='\0';
+          }
+>>>>>>> Stashed changes
           strcat(currentWord, string);
      }
      else
