@@ -188,6 +188,7 @@ void readInput(char *string)
      if (fgets(string,MAX_LENGTH+1,stdin)!=NULL)
      {
           if(position=strchr(string,'\n'))
+                *position='\0';
 
           strcat(currentWord, string);
      }
