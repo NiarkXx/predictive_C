@@ -140,7 +140,7 @@ void writeWordIntoDic(char string[])
 
           while(fscanf(file, "%s %d", word, &occurence)!=EOF)
           {
-               if(done!=true)
+               if(!done)
                {
                     if(strcoll(word,string)<0)
                     {

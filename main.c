@@ -27,7 +27,7 @@ void readInput(char *string);
 bool searchEnter(char *string);
 bool searchSpace(char *currentWord, char *wordAfter );
 bool searchBackSlash(char *string);
-void wait(float time);
+void waitFor (unsigned int secs);
 void writeWordIntoDic(char string[]);
 
 //----------------- GLOBALS -----------------
@@ -55,13 +55,13 @@ void menu()
 {
      int input=0;
      bool quit=false;
-     while(quit == false)
+     while(!quit)
      {
           printf("\n\nPredictive Text Simulation \n" );
           printf("---------------------------------\n");
           printf("1) Enable/Disable Predictive Text. ( Currently : " );
 
-          if(enablePredictive ==true)
+          if(enablePredictive)
                printf("TRUE )\n" );
           else
                printf("FALSE )\n" );
@@ -82,6 +82,8 @@ void menu()
                case 3:
                     quit=true;
                     break;
+              default:
+                  break;
           }
      }
 }
@@ -108,16 +110,17 @@ void selectMode()
 
 void typeSMSPredictive()
 {
-     system("clear");
+     system("cls");
      int input=0;
      bool send=false;
-     char *saisie;
-     char *wordAfter;
+     char saisie[MAX_LENGTH_WORD];
+     char wordAfter[MAX_LENGTH_WORD];
      
 
-     while(send == false)
+     while(!send)
      {
-          system("clear");
+          waitFor(10);
+          system("cls");
           printf("Type your SMS\n");
           printf("ca marche \n");
           readInput(saisie);
@@ -131,6 +134,7 @@ void typeSMSPredictive()
           }
           if(searchEnter)
           {
+               writeWordIntoDic(smsArray);
                send = true;
           }
           if(searchBackSlash)
@@ -207,7 +211,7 @@ bool searchSpace(char *currentWord, char *wordAfter )
                value=true;
           }
 
-          if(value && done==false)
+          if(value && !done)
           {
                for(int j=i;j<strlen(currentWord);j++)
                {
@@ -223,16 +227,15 @@ bool searchSpace(char *currentWord, char *wordAfter )
 
 }
 
-void wait(float time)
+void waitFor (unsigned int secs)
 {
-    clock_t waiting = clock() + (time * CLOCKS_PER_SEC);
-    while(clock() < waiting);
+     unsigned int retTime = time(0) + secs;
+     while (time(0) < retTime);
 }
 
 void writeWordIntoDic(char string[])
 {
      FILE *file=fopen("dictionnaire.txt","r+");
-     int cursor=0;
      char word[MAX_LENGTH];
      FILE *fileCopy=fopen("dictionnaire_tmp.txt","w+");
      bool done=false;
@@ -243,7 +246,7 @@ void writeWordIntoDic(char string[])
           while(fscanf(file, "%s", word)!=EOF)
           //while(fscanf(file, "%s", word)==1)
           {
-               if(done!=true)
+               if(!done)
                {
                     if(strcoll(word,string)<0)
                     {
