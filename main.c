@@ -27,7 +27,6 @@ void readInput(char *string);
 bool searchEnter(char *string);
 bool searchSpace(char *currentWord, char *wordAfter );
 bool searchBackSlash(char *string);
-void wait(float time);
 void writeWordIntoDic(char string[]);
 
 //----------------- GLOBALS -----------------
@@ -110,35 +109,28 @@ void typeSMSPredictive()
 {
      system("clear");
      int input=0;
-     bool send=false;
      char *saisie;
      char *wordAfter;
-     
 
-     while(send == false)
+     do
      {
           system("clear");
           printf("Type your SMS\n");
-          printf("ca marche \n");
-          readInput(saisie);
           printf("1) Word 1   2) Word 2   3) Word 3\n" );
           printf("%s", smsArray);
           printf("%s", currentWord);
-          while(searchSpace(currentWord, wordAfter))
+          saisie = getchar();
+          if(saisie == ' ')
           {
                strcat(smsArray, currentWord);
-               currentWord[0] = '\0';
+               strcpy(currentWord, " ");
+               currentWord[0]='\0';
           }
-          if(searchEnter)
-          {
-               send = true;
-          }
-          if(searchBackSlash)
+          else if(saisie == '/')
           {
                scanf("%d",&input );
                switch (input) {
                case 1:
-
                     break;
                case 2:
                     break;
@@ -149,7 +141,11 @@ void typeSMSPredictive()
                     break;
                }
           }
-     }
+          else if(saisie != '\n')
+          {
+               strcat(currentWord, saisie);
+          }
+     }while(saisie != '\n');
 }
 
 void cleanBuffer(void)
@@ -161,73 +157,68 @@ void cleanBuffer(void)
      }
 }
 
-bool searchEnter(char *string)
-{
-     bool value=false;
+// bool searchEnter(char *string)
+// {
+//      bool value=false;
 
-     for(int i=0;i<strlen(string);i++)
-     {
-          if(string[i]=='\n')
-               value= true;
-     }
-     return value;
-}
+//      for(int i=0;i<strlen(string);i++)
+//      {
+//           if(string[i]=='\n')
+//                value= true;
+//      }
+//      return value;
+// }
 
-bool searchBackSlash(char *string)
-{
-     bool value=false;
-     for(int i=0;i<strlen(string);i++)
-     {
-          if(string[i]=='/')
-               value= true;
-     }
-     return value;
-}
+// bool searchBackSlash(char *string)
+// {
+//      bool value=false;
+//      for(int i=0;i<strlen(string);i++)
+//      {
+//           if(string[i]=='/')
+//                value= true;
+//      }
+//      return value;
+// }
 
-void readInput(char *string)
-{
-     char text[MAX_LENGTH_WORD];
-     if (scanf("%30s", text) != 0)
-     {
-          strcat(currentWord, string);
-     }
-     else
-          cleanBuffer();
-}
+// void readInput(char *string)
+// {
+//      char text[MAX_LENGTH_WORD];
+//      if (scanf("%30s", text) != 0)
+//      {
+//           strcat(currentWord, string);
+//      }
+//      else
+//           cleanBuffer();
+// }
 
-bool searchSpace(char *currentWord, char *wordAfter )
-{
-     bool value=false;
-     int counter=0;
-     bool done=false;
-     for(int i=0;i<strlen(currentWord);i++)
-     {
-          if(currentWord[i]==' ')
-          {
-               value=true;
-          }
+// bool searchSpace(char currentWord)
+// {
+//      bool value=false;
+//      int counter=0;
+//      bool done=false;
+//      for(int i=0;i<strlen(currentWord);i++)
+//      {
+//           if(currentWord[i]==' ')
+//           {
+//                value=true;
+//           }
 
-          if(value && done==false)
-          {
-               for(int j=i;j<strlen(currentWord);j++)
-               {
-                    done=true;
-                    wordAfter[counter]=currentWord[j];
-                    counter++;
+//           if(value && done==false)
+//           {
+//                for(int j=i;j<strlen(currentWord);j++)
+//                {
+//                     done=true;
+//                     wordAfter[counter]=currentWord[j];
+//                     counter++;
 
-               }
-          }
-     }
+//                }
+//           }
+//      }
 
-     return value;
+//      return value;
 
-}
+// }
 
-void wait(float time)
-{
-    clock_t waiting = clock() + (time * CLOCKS_PER_SEC);
-    while(clock() < waiting);
-}
 
 void writeWordIntoDic(char string[])
 {
