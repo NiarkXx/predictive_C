@@ -27,7 +27,7 @@ void readInput(char *string);
 bool searchEnter(char *string);
 bool searchSpace(char *currentWord, char *wordAfter );
 bool searchBackSlash(char *string);
-void writeWordIntoDic(char string[]);
+void writeWordIntoDic(char string[Taille_max_pred]);
 
 //----------------- GLOBALS -----------------
 
@@ -91,7 +91,7 @@ void typeSMSNonPredictive()
 
      printf("Type your text : \n" );
     // cleanBuffer();
-     readInput(inputText);
+     //readInput(inputText);
 }
 
 
@@ -109,7 +109,7 @@ void typeSMSPredictive()
 {
      system("clear");
      int input=0;
-     char *saisie;
+     char saisie;
      char *wordAfter;
 
      do
@@ -143,7 +143,7 @@ void typeSMSPredictive()
           }
           else if(saisie != '\n')
           {
-               strcat(currentWord, saisie);
+               strcat(currentWord, &saisie);
           }
      }while(saisie != '\n');
 }
@@ -220,35 +220,43 @@ void cleanBuffer(void)
 // }
 
 
-void writeWordIntoDic(char string[])
+void writeWordIntoDic(char string[Taille_max_pred])
 {
-     FILE *file=fopen("dictionnaire.txt","r+");
-     int cursor=0;
-     char word[MAX_LENGTH];
-     FILE *fileCopy=fopen("dictionnaire_tmp.txt","w+");
-     bool done=false;
+     FILE *file = fopen("dictionnaire.txt","r+");
+     int cursor = 0;
+     char word[Taille_max_pred];
+     FILE *fileCopy = fopen("dictionnaire_tmp.txt","w+");
+     bool done = false;
+     int occurence = 0;
 
-     if (file!=NULL && fileCopy!=NULL) {
+     if (file != NULL && fileCopy != NULL) {
           rewind(file);
 
-          while(fscanf(file, "%s", word)!=EOF)
-          //while(fscanf(file, "%s", word)==1)
+          while(fscanf(file, "%s %d", word, &occurence)!=EOF)
           {
                if(done!=true)
                {
                     if(strcoll(word,string)<0)
                     {
-                         fprintf(fileCopy, "%s\n",word );
+                         fprintf(fileCopy, "%s %d\n",word,occurence );
+                    }
+                    else if(strcoll(word,string)==0)
+                    {
+                         occurence++;
+                         fprintf(fileCopy,"%s %d\n",word, occurence);
+                         done=true;
                     }
                     else
                     {
-                         fprintf(fileCopy,"%s\n",string);
-                         fprintf(fileCopy,"%s\n",word);
+                         fprintf(fileCopy,"%s %d\n",string,1);
+                         fprintf(fileCopy,"%s %d\n",word,occurence);
                          done=true;
                     }
                }
                else
-                    fprintf(fileCopy,"%s\n",word);
+               {
+                    fprintf(fileCopy,"%s %d\n",word,occurence);
+               }
           }
      }
      else

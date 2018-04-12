@@ -154,7 +154,7 @@ void writeWordIntoDic(char string[])
                     }
                     else
                     {
-                         fprintf(fileCopy,"%s %d\n",string,0);
+                         fprintf(fileCopy,"%s %d\n",string,1);
                          fprintf(fileCopy,"%s %d\n",word,occurence);
                          done=true;
                     }

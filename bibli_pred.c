@@ -81,7 +81,7 @@ Motpred** lecture_fichier_pred()
 	FILE *fp = fopen("dictionnaire.txt", "r");
 	char monmot[Taille_max_pred];
 	int occurance;
-	while (fscanf(fp, "%s %d \n", monmot, occurance) != EOF)
+	while (fscanf(fp, "%s %d \n", monmot, &occurance) != EOF)
 	{	
 		insertionpred(tab, monmot, occurance);
 	}
@@ -115,6 +115,8 @@ Motpred* recherche_pour_ajout(Motpred **tab, char motatrouver[Taille_max_pred])
 		maillon -> prec = ptr;
 	}
 }
+
+
 
 Motpred* recherche_pred(Motpred **tab, char motatrouver[Taille_max_pred])
 {
