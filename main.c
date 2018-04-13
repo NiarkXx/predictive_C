@@ -3,6 +3,8 @@
 #include <stdbool.h>
 #include <string.h>
 #include <time.h>
+#include <termios.h>
+#include <assert.h>
 #include "bibli_doc.h"
 #include "bibli_pred.h"
 
@@ -23,11 +25,12 @@ void typeSMSPredictive(void);
 void typeSMSNonPredictive(void);
 void selectMode(void);
 void cleanBuffer(void);
-void readInput(char *string);
-bool searchEnter(char *string);
-bool searchSpace(char *currentWord, char *wordAfter );
-bool searchBackSlash(char *string);
+// void readInput(char *string);
+// bool searchEnter(char *string);
+// bool searchSpace(char *currentWord, char *wordAfter );
+// bool searchBackSlash(char *string);
 void writeWordIntoDic(char string[Taille_max_pred]);
+int getch(void);
 
 //----------------- GLOBALS -----------------
 
@@ -117,9 +120,9 @@ void typeSMSPredictive()
           system("clear");
           printf("Type your SMS\n");
           printf("1) Word 1   2) Word 2   3) Word 3\n" );
-          printf("%s", smsArray);
+          printf("%s ", smsArray);
           printf("%s", currentWord);
-          saisie = getchar();
+          saisie = getch();
           if(saisie == ' ')
           {
                strcat(smsArray, currentWord);
@@ -148,13 +151,32 @@ void typeSMSPredictive()
      }while(saisie != '\n');
 }
 
-void cleanBuffer(void)
-{
-     int c=0;
-     while(c !='\n' && c!=EOF)
-     {
-          c=getchar();
-     }
+// void cleanBuffer(void)
+// {
+//      int c=0;
+//      while(c !='\n' && c!=EOF)
+//      {
+//           c=getchar();
+//      }
+// }
+
+int getch(void) {
+      int c=0;
+
+      struct termios org_opts, new_opts;
+      int res=0;
+          //-----  store old settings -----------
+      res=tcgetattr(STDIN_FILENO, &org_opts);
+      assert(res==0);
+          //---- set new terminal parms --------
+      memcpy(&new_opts, &org_opts, sizeof(new_opts));
+      new_opts.c_lflag &= ~(ICANON | ECHO | ECHOE | ECHOK | ECHONL | ECHOPRT | ECHOKE | ICRNL);
+      tcsetattr(STDIN_FILENO, TCSANOW, &new_opts);
+      c=getchar();
+          //------  restore old settings ---------
+      res=tcsetattr(STDIN_FILENO, TCSANOW, &org_opts);
+      assert(res==0);
+      return(c);
 }
 
 // bool searchEnter(char *string)
