@@ -329,25 +329,30 @@ rename("dictionnaire_tmp.txt","dictionnaire.txt");
 
 void insertion_dic(char sentence[MAX_LENGTH])
 {
-  int i = 0;
-  int j = 0;
-  char word[MAX_LENGTH_WORD];
-  while(sentence[i] != '\0')
-  {
-    if(sentence[i] == ' ')
-    {
-      writeWordIntoDic(word);
-      strcpy(word, " ");
-      word[0]='\0';
-      j = 0;
-    }
-    else  
-    {
-      word[j] = sentence[i];
-      j++;
-    }
-    i++;
-    
-  }
+     int i = 1;
+     int j = 0;
+     int k;
+     char word[MAX_LENGTH_WORD];
+     while(sentence[i] != '\0')
+     {
+          if(sentence[i] == ' ')
+          {
+               writeWordIntoDic(word);
+               for(k=0; k<=j; k++)
+               {
+                    word[k]='\0';
+               }
+               
+               j = 0;
+          }
+          else  
+          {
+               word[j] = sentence[i];
+               j++;
+          }
+
+          i++;
+
+     }
 
 }
