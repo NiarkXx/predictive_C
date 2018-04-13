@@ -47,35 +47,36 @@ void writeWordIntoDic(char word_to_add[MAX_LENGTH_WORD])
         }
         else {
             rewind(file);
-            while(fscanf(file, "%s %d", word_dic, &occurence)==2)
+            initArray(word_dic);
+            while(fscanf(file, "%s %d\n", word_dic, &occurence)==2)
             {
-            	if(!done)
-            	{
-            		if(strcmp(word_dic,word_to_add)==0)
-            		{
-            			occurence++;
-            			fprintf(fileCopy,"%s %d\n",word_dic, occurence);
-            			done=true;
-            		}
-            		else if(strcmp(word_dic,word_to_add)<0)
-            		{
-            			fprintf(fileCopy, "%s %d\n",word_dic,occurence );
-            		}
-            		else
-            		{
-            			fprintf(fileCopy,"%s %d\n",word_to_add,1);
-            			fprintf(fileCopy,"%s %d\n",word_dic,occurence);
-            			done=true;
-            		}
-            	}
-            	else
-            	{
-            		fprintf(fileCopy,"%s %d\n",word_dic,occurence);
-            	}
+               if(!done)
+               {
+                    if(strcmp(word_dic,word_to_add)==0)
+                    {
+                         occurence++;
+                         fprintf(fileCopy,"%s %d\n",word_dic, occurence);
+                         done=true;
+                    }
+                    else if(strcmp(word_dic,word_to_add)<0)
+                    {
+                         fprintf(fileCopy, "%s %d\n",word_dic,occurence );
+                    }
+                    else
+                    {
+                         fprintf(fileCopy,"%s %d\n",word_to_add,1);
+                         fprintf(fileCopy,"%s %d\n",word_dic,occurence);
+                         done=true;
+                    }
+               }
+               else
+               {
+                    fprintf(fileCopy,"%s %d\n",word_dic,occurence);
+               }
             }
             if(!done)
             {
-            	fprintf(fileCopy,"%s %d\n",word_to_add,1);
+               fprintf(fileCopy,"%s %d\n",word_to_add,1);
             }
             
         }

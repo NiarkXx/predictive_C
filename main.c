@@ -216,7 +216,6 @@ int getch(void) {
 void writeWordIntoDic(char word_to_add[MAX_LENGTH_WORD])
 {
  FILE *file = fopen("dictionnaire.txt","r+");
- int cursor = 0;
  char word_dic[MAX_LENGTH_WORD];
  FILE *fileCopy = fopen("dictionnaire_tmp.txt","w+");
  bool done = false;
@@ -231,6 +230,7 @@ void writeWordIntoDic(char word_to_add[MAX_LENGTH_WORD])
         }
         else {
             rewind(file);
+            initArray(word_dic);
             while(fscanf(file, "%s %d", word_dic, &occurence)==2)
             {
                if(!done)
@@ -279,13 +279,12 @@ void writeWordIntoDic(char word_to_add[MAX_LENGTH_WORD])
 
     if (renameTest != 0) {
         printf("Error to rename");
-
     }
 }
 
 void insertion_dic(char sentence[MAX_LENGTH])
 {
-  int i = 0;
+  int i = 1;
   int j = 0;
   char word[MAX_LENGTH_WORD];
   initArray(word);

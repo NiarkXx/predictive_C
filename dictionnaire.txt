@@ -1,4 +1,8 @@
-Je 1
-des 1
-mange 1
-pommes 1
+des 2
+je 1
+manges 1
+mùange 1
+pommes 2
+salut 1
+tomas 1
+tu 1
