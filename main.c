@@ -346,6 +346,7 @@ void insertion_dic(char sentence[MAX_LENGTH])
       word[j] = sentence[i];
       j++;
     }
+    i++;
     
   }
 
