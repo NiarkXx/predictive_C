@@ -1,4 +1,11 @@
 Des 1
-Je 1
+Je 8
 Mange 3
+Pain 4
+Saucisse 3
 abus 1
+Je 1
+des 2
+mange 2
+des 1
+pommes 1

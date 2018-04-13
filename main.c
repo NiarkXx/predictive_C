@@ -354,5 +354,9 @@ void insertion_dic(char sentence[MAX_LENGTH])
           i++;
 
      }
+     if(word[0]!='\0')
+     {
+          writeWordIntoDic(word);
+     }
 
 }
