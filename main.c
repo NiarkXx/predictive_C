@@ -13,7 +13,7 @@
 
 #define MAX_LENGTH 300
 #define MAX_LENGTH_WORD 30
-
+#define clear() printf("\033[H\033[J")
 
 
 //----------------- STRUCTURES -----------------
@@ -103,7 +103,7 @@ void selectMode()
 {
      if (enablePredictive) {
                typeSMSPredictive();
-               printf("typeSMSPredictive\n" );
+               printf("\n \ntypeSMSPredictive\n" );
      }
      else
                typeSMSNonPredictive();
@@ -111,15 +111,15 @@ void selectMode()
 
 void typeSMSPredictive()
 {
+	clear();
 	cleanBuffer();
-     printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
      int input=0;
      char saisie;
      char *wordAfter;
 
      do
      {
-          printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+	clear();
           printf("Type your SMS\n");
           printf("1) Word 1   2) Word 2   3) Word 3\n" );
           printf("%s ", smsArray);
@@ -127,6 +127,7 @@ void typeSMSPredictive()
           saisie = getch();
           if(saisie == ' ')
           {
+               strcat(smsArray, " ");
                strcat(smsArray, currentWord);
                strcpy(currentWord, " ");
                currentWord[0]='\0';
@@ -134,12 +135,25 @@ void typeSMSPredictive()
           else if(saisie == '/')
           {
                scanf("%d",&input );
+               cleanBuffer();
                switch (input) {
                case 1:
+               	    strcat(smsArray, " ");
+               	    strcat(smsArray, "Word 1");
+               	    strcpy(currentWord, " ");
+                    currentWord[0]='\0';
                     break;
                case 2:
+               	    strcat(smsArray, " ");
+               	    strcat(smsArray, "Word 2");
+               	    strcpy(currentWord, " ");
+                    currentWord[0]='\0';
                     break;
                case 3:
+               	    strcat(smsArray, " ");
+               	    strcat(smsArray, "Word 3");
+               	    strcpy(currentWord, " ");
+                    currentWord[0]='\0';
                     break;
                default:
                     printf("ERROR");
@@ -151,6 +165,12 @@ void typeSMSPredictive()
                strcat(currentWord, &saisie);
           }
      }while(saisie != '\n');
+     strcat(smsArray, " ");
+     strcat(smsArray, currentWord);
+     strcpy(currentWord, " ");
+     currentWord[0]='\0';
+     strcpy(smsArray, " ");
+     smsArray[0]='\0';
 }
 
 void cleanBuffer(void)
