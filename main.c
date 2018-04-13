@@ -26,13 +26,10 @@ void typeSMSPredictive(void);
 void typeSMSNonPredictive(void);
 void selectMode(void);
 void cleanBuffer(void);
-// void readInput(char *string);
-// bool searchEnter(char *string);
-// bool searchSpace(char *currentWord, char *wordAfter );
-// bool searchBackSlash(char *string);
 void writeWordIntoDic(char string[Taille_max_pred]);
 int getch(void);
 void insertion_dic(char sentence[MAX_LENGTH]);
+void initArray(char *array);
 
 //----------------- GLOBALS -----------------
 
@@ -216,147 +213,107 @@ int getch(void) {
   return(c);
 }
 
-// bool searchEnter(char *string)
-// {
-//      bool value=false;
-
-//      for(int i=0;i<strlen(string);i++)
-//      {
-//           if(string[i]=='\n')
-//                value= true;
-//      }
-//      return value;
-// }
-
-// bool searchBackSlash(char *string)
-// {
-//      bool value=false;
-//      for(int i=0;i<strlen(string);i++)
-//      {
-//           if(string[i]=='/')
-//                value= true;
-//      }
-//      return value;
-// }
-
-// void readInput(char *string)
-// {
-//      char text[MAX_LENGTH_WORD];
-//      if (scanf("%30s", text) != 0)
-//      {
-//           strcat(currentWord, string);
-//      }
-//      else
-//           cleanBuffer();
-// }
-
-// bool searchSpace(char currentWord)
-// {
-//      bool value=false;
-//      int counter=0;
-//      bool done=false;
-//      for(int i=0;i<strlen(currentWord);i++)
-//      {
-//           if(currentWord[i]==' ')
-//           {
-//                value=true;
-//           }
-
-//           if(value && done==false)
-//           {
-//                for(int j=i;j<strlen(currentWord);j++)
-//                {
-//                     done=true;
-//                     wordAfter[counter]=currentWord[j];
-//                     counter++;
-
-//                }
-//           }
-//      }
-
-//      return value;
-
-// }
-
-
-void writeWordIntoDic(char string[MAX_LENGTH_WORD])
+void writeWordIntoDic(char word_to_add[MAX_LENGTH_WORD])
 {
  FILE *file = fopen("dictionnaire.txt","r+");
  int cursor = 0;
- char word[MAX_LENGTH_WORD];
+ char word_dic[MAX_LENGTH_WORD];
  FILE *fileCopy = fopen("dictionnaire_tmp.txt","w+");
  bool done = false;
- int occurence = 0;
+ int occurence = 1;
+ int removeTest;
+ int renameTest;
 
  if (file != NULL && fileCopy != NULL) {
-  rewind(file);
+        rewind(file);
+        if (fgetc(file) == EOF) {
+            fprintf(fileCopy, "%s %d\n", word_to_add, 1);
+        }
+        else {
+            rewind(file);
+            while(fscanf(file, "%s %d", word_dic, &occurence)==2)
+            {
+               if(!done)
+               {
+                    if(strcmp(word_dic,word_to_add)==0)
+                    {
+                         occurence++;
+                         fprintf(fileCopy,"%s %d\n",word_dic, occurence);
+                         done=true;
+                    }
+                    else if(strcmp(word_dic,word_to_add)<0)
+                    {
+                         fprintf(fileCopy, "%s %d\n",word_dic,occurence );
+                    }
+                    else
+                    {
+                         fprintf(fileCopy,"%s %d\n",word_to_add,1);
+                         fprintf(fileCopy,"%s %d\n",word_dic,occurence);
+                         done=true;
+                    }
+               }
+               else
+               {
+                    fprintf(fileCopy,"%s %d\n",word_dic,occurence);
+               }
+            }
+            if(!done)
+            {
+               fprintf(fileCopy,"%s %d\n",word_to_add,1);
+            }
+            
+        }
 
-  while(fscanf(file, "%s %d", word, &occurence)!=EOF)
-  {
-    if(done!=true)
-    {
-      if(strcoll(word,string)<0)
-      {
-        fprintf(fileCopy, "%s %d\n",word,occurence );
-      }
-      else if(strcoll(word,string)==0)
-      {
-        occurence++;
-        fprintf(fileCopy,"%s %d\n",word, occurence);
-        done=true;
-      }
-      else
-      {
-        fprintf(fileCopy,"%s %d\n",string,1);
-        fprintf(fileCopy,"%s %d\n",word,occurence);
-        done=true;
-      }
-    }
-    else
-    {
-      fprintf(fileCopy,"%s %d\n",word,occurence);
-    }
-  }
-}
-else
-  printf("Error : Can't read the file\n");
+    } else
+        printf("Error : Can't open the file");
 
-fclose(file);
-fclose(fileCopy);
-remove("dictionnaire.txt");
-rename("dictionnaire_tmp.txt","dictionnaire.txt");
+    fclose(file);
+    fclose(fileCopy);
+
+
+    removeTest = remove("dictionnaire.txt");
+    if (removeTest != 0)
+        printf("Error to remove the file");
+
+    renameTest = rename("dictionnaire_tmp.txt", "dictionnaire.txt");
+
+    if (renameTest != 0) {
+        printf("Error to rename");
+
+    }
 }
 
 void insertion_dic(char sentence[MAX_LENGTH])
 {
-     int i = 1;
-     int j = 0;
-     int k;
-     char word[MAX_LENGTH_WORD];
-     while(sentence[i] != '\0')
-     {
-          if(sentence[i] == ' ')
-          {
-               writeWordIntoDic(word);
-               for(k=0; k<=j; k++)
-               {
-                    word[k]='\0';
-               }
-               
-               j = 0;
-          }
-          else  
-          {
-               word[j] = sentence[i];
-               j++;
-          }
+  int i = 0;
+  int j = 0;
+  char word[MAX_LENGTH_WORD];
+  initArray(word);
+  while(sentence[i] != '\0')
+  {
+    if(sentence[i] == ' ')
+    {
+      writeWordIntoDic(word);
+      initArray(word);
+      j = 0;
+    }
+    else  
+    {
+      word[j] = sentence[i];
+      j++;
+    }
+      i++;
 
-          i++;
+  }
+  if(word[0]!='\0')
+  {
+     writeWordIntoDic(word);
+  }
 
-     }
-     if(word[0]!='\0')
-     {
-          writeWordIntoDic(word);
-     }
+}
 
+void initArray(char *array)
+{
+    for (int i=0;i<MAX_LENGTH_WORD;i++)
+        array[i]='\0';
 }

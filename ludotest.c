@@ -25,7 +25,7 @@ int main(int argc, char const *argv[])
 	// printf("%d \n", strlen(tab));
 	// tab[0]='a';
 	// printf("%d \n", strlen(tab));
-	insertion_dic("Je mange des pommes");
+	insertion_dic("abris abribus arbre airbus");
 	return 0;
 }
 
@@ -49,12 +49,8 @@ void writeWordIntoDic(char word_to_add[MAX_LENGTH_WORD])
             rewind(file);
             while(fscanf(file, "%s %d", word_dic, &occurence)==2)
             {
-            	printf("%s 2\n", word_dic);
             	if(!done)
             	{
-            		printf("mot du dico = %s\n", word_dic);
-            		printf("mot à ajouter = %s\n", word_to_add);
-            		printf("différence = %d\n", strcmp(word_dic, word_to_add));
             		if(strcmp(word_dic,word_to_add)==0)
             		{
             			occurence++;
@@ -113,7 +109,6 @@ void insertion_dic(char sentence[MAX_LENGTH])
   {
     if(sentence[i] == ' ')
     {
-      printf("%s 1\n", word);
       writeWordIntoDic(word);
       initArray(word);
       j = 0;
