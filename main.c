@@ -5,6 +5,7 @@
 #include <time.h>
 #include <termios.h>
 #include <assert.h>
+#include <unistd.h>
 #include "bibli_doc.h"
 #include "bibli_pred.h"
 
@@ -110,14 +111,15 @@ void selectMode()
 
 void typeSMSPredictive()
 {
-     system("clear");
+	cleanBuffer();
+     printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
      int input=0;
      char saisie;
      char *wordAfter;
 
      do
      {
-          system("clear");
+          printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
           printf("Type your SMS\n");
           printf("1) Word 1   2) Word 2   3) Word 3\n" );
           printf("%s ", smsArray);
@@ -151,14 +153,14 @@ void typeSMSPredictive()
      }while(saisie != '\n');
 }
 
-// void cleanBuffer(void)
-// {
-//      int c=0;
-//      while(c !='\n' && c!=EOF)
-//      {
-//           c=getchar();
-//      }
-// }
+void cleanBuffer(void)
+{
+      int c=0;
+      while(c !='\n' && c!=EOF)
+      {
+           c=getchar();
+      }
+}
 
 int getch(void) {
       int c=0;
