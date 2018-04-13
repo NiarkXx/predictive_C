@@ -10,8 +10,10 @@ camping 1
 comm 2
 comment 2
 commet 1
+courses 1
 des 3
 dur 1
+et 1
 je 1
 mane 1
 mange 1
@@ -20,11 +22,13 @@ mùange 1
 pommes 3
 prassec 1
 saalut 2
+salade 1
 salant 1
 salut 8
 t 1
 t876 1
 tomas 1
+torche 1
 tu 2
 tuf 1
 va 4

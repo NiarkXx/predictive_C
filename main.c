@@ -117,6 +117,9 @@ void typeSMSPredictive()
      char saisie;
      char *wordAfter;
      bool vide;
+     char word1[MAX_LENGTH_WORD];
+     char word2[MAX_LENGTH_WORD];
+     char word3[MAX_LENGTH_WORD];
      do
      {
           clear();
@@ -129,7 +132,10 @@ void typeSMSPredictive()
           else
           {
                dico = lecture_fichier(strlen(currentWord));
-               printf("1) %s 2) %s 3) %s\n",recherche(dico, currentWord, strlen(currentWord)) -> lemot, recherche(dico, currentWord, strlen(currentWord)) -> lemot, recherche(dico, currentWord, strlen(currentWord)) -> lemot);
+               strcpy(word1, recherche(dico, currentWord, strlen(currentWord)) -> lemot);
+               strcpy(word2, recherche_2eme(dico, currentWord, strlen(currentWord), word1) -> lemot);
+               strcpy(word3, recherche_3eme(dico, currentWord, strlen(currentWord), word1, word2) -> lemot);
+               printf("1) %s 2) %s 3) %s\n", word1, word2, word3);
 // printf("Word 1 Word 2 Word 3\n");
                printf("%s ", smsArray);
                printf("%s", currentWord);
@@ -159,21 +165,21 @@ void typeSMSPredictive()
                switch (input) {
                     case 1:
                     strcat(smsArray, " ");
-                    strcat(smsArray, recherche(dico, currentWord, strlen(currentWord)) -> lemot);
+                    strcat(smsArray, word1);
                     strcpy(currentWord, " ");
                     currentWord[0]='\0';
                     vide = true;
                     break;
                     case 2:
                     strcat(smsArray, " ");
-                    strcat(smsArray, recherche(dico, currentWord, strlen(currentWord)) -> lemot);
+                    strcat(smsArray, word2);
                     strcpy(currentWord, " ");
                     currentWord[0]='\0';
                     vide = true;
                     break;
                     case 3:
                     strcat(smsArray, " ");
-                    strcat(smsArray, recherche(dico, currentWord, strlen(currentWord)) -> lemot);
+                    strcat(smsArray, word3);
                     strcpy(currentWord, " ");
                     currentWord[0]='\0';
                     vide = true;

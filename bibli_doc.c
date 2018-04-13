@@ -31,6 +31,8 @@ unsigned long long hachage(char monmot[Taille_max], int n);
 void insertion(Mot **tab, char monmot[Taille_max], int n);
 Mot** lecture_fichier(int n);
 Mot* recherche(Mot **tab, char motatrouver[Taille_max], int n);
+Mot* recherche_2eme(Mot **tab, char motatrouver[Taille_max], int n, char mot1[Taille_max]);
+Mot* recherche_3eme(Mot **tab, char motatrouver[Taille_max], int n, char mot1[Taille_max], char mot2[Taille_max]);
 
 Mot** creation()
 {
@@ -96,6 +98,52 @@ Mot* recherche(Mot **tab, char motatrouver[Taille_max], int n)
 	while (ptr != NULL && trouve != 1)
 	{
 		if (strncmp(ptr -> lemot, motatrouver, n) == 0)
+		{
+			trouve = 1;
+		}
+		ptr = ptr -> suiv;
+	}
+	if (trouve == 1)
+	{
+		return ptr -> prec;
+	}
+	else 
+	{
+		return NULL;
+	}
+}
+
+Mot* recherche_2eme(Mot **tab, char motatrouver[Taille_max], int n, char mot1[Taille_max])
+{
+	int trouve = 0;
+	unsigned long long placement = hachage(motatrouver, n);
+	Mot* ptr = tab[placement];
+	while (ptr != NULL && trouve != 1)
+	{
+		if (strncmp(ptr -> lemot, motatrouver, n) == 0 && strcmp(ptr->lemot, mot1)!=0)
+		{
+			trouve = 1;
+		}
+		ptr = ptr -> suiv;
+	}
+	if (trouve == 1)
+	{
+		return ptr -> prec;
+	}
+	else 
+	{
+		return NULL;
+	}
+}
+
+Mot* recherche_3eme(Mot **tab, char motatrouver[Taille_max], int n, char mot1[Taille_max], char mot2[Taille_max])
+{
+	int trouve = 0;
+	unsigned long long placement = hachage(motatrouver, n);
+	Mot* ptr = tab[placement];
+	while (ptr != NULL && trouve != 1)
+	{
+		if (strncmp(ptr -> lemot, motatrouver, n) == 0 && strcmp(ptr->lemot, mot1)!=0 && strcmp(ptr->lemot, mot2)!=0)
 		{
 			trouve = 1;
 		}

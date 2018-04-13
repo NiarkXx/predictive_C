@@ -31,3 +31,5 @@ unsigned long long hachage(char monmot[Taille_max], int n);
 void insertion(Mot **tab, char monmot[Taille_max], int n);
 Mot** lecture_fichier(int n);
 Mot* recherche(Mot **tab, char motatrouver[Taille_max], int n);
+Mot* recherche_2eme(Mot **tab, char motatrouver[Taille_max], int n, char mot1[Taille_max]);
+Mot* recherche_3eme(Mot **tab, char motatrouver[Taille_max], int n, char mot1[Taille_max], char mot2[Taille_max]);
