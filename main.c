@@ -32,6 +32,7 @@ void cleanBuffer(void);
 // bool searchBackSlash(char *string);
 void writeWordIntoDic(char string[Taille_max_pred]);
 int getch(void);
+void insertion_dic(char sentence[MAX_LENGTH]);
 
 //----------------- GLOBALS -----------------
 
@@ -46,54 +47,55 @@ int main(int argc, char const *argv[]) {
 
 
 
-     menu();
+ menu();
 
 
-     return 0;
+ return 0;
 }
 
 //----------------- FUNCTIONS -----------------
 
 void menu()
 {
-     int input=0;
-     bool quit=false;
-     while(quit == false)
-     {
-          printf("\n\nPredictive Text Simulation \n" );
-          printf("---------------------------------\n");
-          printf("1) Enable/Disable Predictive Text. ( Currently : " );
+  int input=0;
+  bool quit=false;
+  while(quit == false)
+  {
+    clear();
+    printf("\n\nPredictive Text Simulation \n" );
+    printf("---------------------------------\n");
+    printf("1) Enable/Disable Predictive Text. ( Currently : " );
 
-          if(enablePredictive ==true)
-               printf("TRUE )\n" );
-          else
-               printf("FALSE )\n" );
+    if(enablePredictive ==true)
+      printf("TRUE )\n" );
+    else
+      printf("FALSE )\n" );
 
-          printf("2) Type a SMS\n" );
-          printf("3) Quit\n" );
-          scanf("%d",&input );
+   printf("2) Type a SMS\n" );
+   printf("3) Quit\n" );
+   scanf("%d",&input );
 
-          switch (input) {
+   switch (input) {
 
-               case 1:
-                    enablePredictive= !enablePredictive;
-                    break;
+     case 1:
+     enablePredictive= !enablePredictive;
+     break;
 
-               case 2:
-                    selectMode();
-                    break;
-               case 3:
-                    quit=true;
-                    break;
-          }
-     }
+     case 2:
+     selectMode();
+     break;
+     case 3:
+     quit=true;
+     break;
+   }
+ }
 }
 
 void typeSMSNonPredictive()
 {
-     char inputText[MAX_LENGTH];
+ char inputText[MAX_LENGTH];
 
-     printf("Type your text : \n" );
+ printf("Type your text : \n" );
     // cleanBuffer();
      //readInput(inputText);
 }
@@ -101,104 +103,117 @@ void typeSMSNonPredictive()
 
 void selectMode()
 {
-     if (enablePredictive) {
-               typeSMSPredictive();
-               printf("\n \ntypeSMSPredictive\n" );
-     }
-     else
-               typeSMSNonPredictive();
+ if (enablePredictive) {
+   typeSMSPredictive();
+   printf("\n \ntypeSMSPredictive\n" );
+ }
+ else
+   typeSMSNonPredictive();
 }
 
 void typeSMSPredictive()
 {
-	clear();
-	cleanBuffer();
-     int input=0;
-     char saisie;
-     char *wordAfter;
+  clear();
+  cleanBuffer();
+  int input=0;
+  char saisie;
+  char *wordAfter;
+  bool vide;
+  do
+  {
+    clear();
+    printf("Type your SMS\n");
+    printf("1) Word 1   2) Word 2   3) Word 3\n" );
+    printf("%s ", smsArray);
+    printf("%s", currentWord);
+    saisie = getch();
+    if(saisie == ' ')
+    {
+      strcat(smsArray, " ");
+      strcat(smsArray, currentWord);
+      strcpy(currentWord, " ");
+      currentWord[0]='\0';
+      vide = true;
+    }
+    else if(saisie == '/')
+    {
+      scanf("%d",&input );
+      cleanBuffer();
+      switch (input) {
+        case 1:
+        strcat(smsArray, " ");
+        strcat(smsArray, "Word 1");
+        strcpy(currentWord, " ");
+        currentWord[0]='\0';
+        vide = true;
+        break;
+        case 2:
+        strcat(smsArray, " ");
+        strcat(smsArray, "Word 2");
+        strcpy(currentWord, " ");
+        currentWord[0]='\0';
+        vide = true;
+        break;
+        case 3:
+        strcat(smsArray, " ");
+        strcat(smsArray, "Word 3");
+        strcpy(currentWord, " ");
+        currentWord[0]='\0';
+        vide = true;
+        break;
+        default:
+        printf("ERROR\n");
+        break;
+      }
+    }
+    else if(saisie != '\n' && vide)
+    {
+      currentWord[0] = saisie;
+      vide = false;
+    }
+    else if(saisie != '\n')
+    {
+      strcat(currentWord, &saisie);
+    }
+  }while(saisie != '\n');
 
-     do
-     {
-	clear();
-          printf("Type your SMS\n");
-          printf("1) Word 1   2) Word 2   3) Word 3\n" );
-          printf("%s ", smsArray);
-          printf("%s", currentWord);
-          saisie = getch();
-          if(saisie == ' ')
-          {
-               strcat(smsArray, " ");
-               strcat(smsArray, currentWord);
-               strcpy(currentWord, " ");
-               currentWord[0]='\0';
-          }
-          else if(saisie == '/')
-          {
-               scanf("%d",&input );
-               cleanBuffer();
-               switch (input) {
-               case 1:
-               	    strcat(smsArray, " ");
-               	    strcat(smsArray, "Word 1");
-               	    strcpy(currentWord, " ");
-                    currentWord[0]='\0';
-                    break;
-               case 2:
-               	    strcat(smsArray, " ");
-               	    strcat(smsArray, "Word 2");
-               	    strcpy(currentWord, " ");
-                    currentWord[0]='\0';
-                    break;
-               case 3:
-               	    strcat(smsArray, " ");
-               	    strcat(smsArray, "Word 3");
-               	    strcpy(currentWord, " ");
-                    currentWord[0]='\0';
-                    break;
-               default:
-                    printf("ERROR");
-                    break;
-               }
-          }
-          else if(saisie != '\n')
-          {
-               strcat(currentWord, &saisie);
-          }
-     }while(saisie != '\n');
-     strcat(smsArray, " ");
-     strcat(smsArray, currentWord);
-     strcpy(currentWord, " ");
-     currentWord[0]='\0';
-     strcpy(smsArray, " ");
-     smsArray[0]='\0';
+  strcat(smsArray, " ");
+  strcat(smsArray, currentWord);
+
+  insertion_dic(smsArray);
+
+  strcpy(currentWord, " ");
+  currentWord[0]='\0';
+  strcpy(smsArray, " ");
+  smsArray[0]='\0';
 }
 
 void cleanBuffer(void)
 {
-      int c=0;
-      while(c !='\n' && c!=EOF)
-      {
-           c=getchar();
-      }
+  int c=0;
+  while(c !='\n' && c!=EOF)
+  {
+   c=getchar();
+ }
 }
 
 int getch(void) {
-      int c=0;
+  int c=0;
 
-      struct termios org_opts, new_opts;
-      int res=0;
+  struct termios org_opts, new_opts;
+  int res=0;
           //-----  store old settings -----------
-      res=tcgetattr(STDIN_FILENO, &org_opts);
-      assert(res==0);
+  res=tcgetattr(STDIN_FILENO, &org_opts);
+  assert(res==0);
           //---- set new terminal parms --------
-      memcpy(&new_opts, &org_opts, sizeof(new_opts));
-      new_opts.c_lflag &= ~(ICANON | ECHO | ECHOE | ECHOK | ECHONL | ECHOPRT | ECHOKE | ICRNL);
-      tcsetattr(STDIN_FILENO, TCSANOW, &new_opts);
-      c=getchar();
+  memcpy(&new_opts, &org_opts, sizeof(new_opts));
+  new_opts.c_lflag &= ~(ICANON | ECHO | ECHOE | ECHOK | ECHONL | ECHOPRT | ECHOKE | ICRNL);
+  tcsetattr(STDIN_FILENO, TCSANOW, &new_opts);
+  c=getchar();
           //------  restore old settings ---------
-      res=tcsetattr(STDIN_FILENO, TCSANOW, &org_opts);
-      assert(res==0);
-      return(c);
+  res=tcsetattr(STDIN_FILENO, TCSANOW, &org_opts);
+  assert(res==0);
+  return(c);
 }
 
 // bool searchEnter(char *string)
@@ -264,50 +279,74 @@ int getch(void) {
 // }
 
 
-void writeWordIntoDic(char string[Taille_max_pred])
+void writeWordIntoDic(char string[MAX_LENGTH_WORD])
 {
-     FILE *file = fopen("dictionnaire.txt","r+");
-     int cursor = 0;
-     char word[Taille_max_pred];
-     FILE *fileCopy = fopen("dictionnaire_tmp.txt","w+");
-     bool done = false;
-     int occurence = 0;
+ FILE *file = fopen("dictionnaire.txt","r+");
+ int cursor = 0;
+ char word[MAX_LENGTH_WORD];
+ FILE *fileCopy = fopen("dictionnaire_tmp.txt","w+");
+ bool done = false;
+ int occurence = 0;
 
-     if (file != NULL && fileCopy != NULL) {
-          rewind(file);
+ if (file != NULL && fileCopy != NULL) {
+  rewind(file);
 
-          while(fscanf(file, "%s %d", word, &occurence)!=EOF)
-          {
-               if(done!=true)
-               {
-                    if(strcoll(word,string)<0)
-                    {
-                         fprintf(fileCopy, "%s %d\n",word,occurence );
-                    }
-                    else if(strcoll(word,string)==0)
-                    {
-                         occurence++;
-                         fprintf(fileCopy,"%s %d\n",word, occurence);
-                         done=true;
-                    }
-                    else
-                    {
-                         fprintf(fileCopy,"%s %d\n",string,1);
-                         fprintf(fileCopy,"%s %d\n",word,occurence);
-                         done=true;
-                    }
-               }
-               else
-               {
-                    fprintf(fileCopy,"%s %d\n",word,occurence);
-               }
-          }
-     }
-     else
-          printf("Error : Can't read the file\n");
+  while(fscanf(file, "%s %d", word, &occurence)!=EOF)
+  {
+    if(done!=true)
+    {
+      if(strcoll(word,string)<0)
+      {
+        fprintf(fileCopy, "%s %d\n",word,occurence );
+      }
+      else if(strcoll(word,string)==0)
+      {
+        occurence++;
+        fprintf(fileCopy,"%s %d\n",word, occurence);
+        done=true;
+      }
+      else
+      {
+        fprintf(fileCopy,"%s %d\n",string,1);
+        fprintf(fileCopy,"%s %d\n",word,occurence);
+        done=true;
+      }
+    }
+    else
+    {
+      fprintf(fileCopy,"%s %d\n",word,occurence);
+    }
+  }
+}
+else
+  printf("Error : Can't read the file\n");
 
-     fclose(file);
-     fclose(fileCopy);
-     remove("dictionnaire.txt");
-     rename("dictionnaire_tmp.txt","dictionnaire.txt");
+fclose(file);
+fclose(fileCopy);
+remove("dictionnaire.txt");
+rename("dictionnaire_tmp.txt","dictionnaire.txt");
+}
+
+void insertion_dic(char sentence[MAX_LENGTH])
+{
+  int i = 0;
+  int j = 0;
+  char word[MAX_LENGTH_WORD];
+  while(sentence[i] != '\0')
+  {
+    if(sentence[i] == ' ')
+    {
+      writeWordIntoDic(word);
+      strcpy(word, " ");
+      word[0]='\0';
+      j = 0;
+    }
+    else  
+    {
+      word[j] = sentence[i];
+      j++;
+    }
+    
+  }
+
 }
