@@ -1,0 +1,1 @@
+/usr/bin/cc -g   CMakeFiles/predictive_C.dir/testFunction.c.o  -o predictive_C 

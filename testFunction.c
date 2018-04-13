@@ -7,7 +7,12 @@
 #define MAX_LENGTH 300
 #define MAX_LENGTH_WORD 50
 
-
+typedef struct _ListWord
+{
+     char word[MAX_LENGTH_WORD];
+     int occurence;
+     struct _ListWord *next;
+}ListWord;
 
 //void readWithEvent(void);
 //void createWindow(void);
@@ -15,7 +20,12 @@
 // bool searchBackSlash(char *string);
 // bool searchSpace(char *string);
 void writeWordIntoDic(char string[]);
+void readSMS(void);
+void displayList(void);
+bool emptyFile(FILE *file);
 //bool searchSpace(char *currentWord, char* wordAfter );
+
+//ListWord *_head = NULL;
 
 int main(int argc, char const *argv[]) {
      // char current[MAX_LENGTH_WORD]="Je suis une phrase";
@@ -34,7 +44,8 @@ int main(int argc, char const *argv[]) {
      //      printf("false\n" );
      // else
      //      printf("Error\n" );
-     writeWordIntoDic("Accident");
+     readSMS();
+     //displayList();
 
      //spaceExist=searchSpace(current,nextWord);
 
@@ -96,27 +107,19 @@ int main(int argc, char const *argv[]) {
 
 void readSMS()
 {
-     FILE *fileToRead=fopen("smsProf.txt","r");
-     FILE *fileToWrite=fopen("dictionnaire.txt","");
-     char wordOne[MAX_LENGTH_WORD];
-     char wordTwo[MAX_LENGTH_WORD];
-     int occurence=0;
+     FILE *fileToRead=fopen("/home/niarkx/Seafile/Documents/Ismin_EI_2017/semestre2/algo_prog2/projet/predictive_C/smsProf.txt","r");
+     char word[MAX_LENGTH_WORD];
+     //ListWord *list = malloc(sizeof(ListWord));
 
      if(fileToRead!=NULL)
      {
-          while(fscanf(fileToRead,"%s\n",wordOne)==1)
+          while(fscanf(fileToRead,"%s",word)!=EOF)
           {
-               while(fscanf(fileToRead,"%s",wordTwo)==1)
-               {
-                    if(strcmp(wordOne,wordTwo)==0)
-                         occurence++;
-               }
-
-
+               writeWordIntoDic(word);
+               // strcpy(list->word,word);
+               // list->next=_head;
+               // _head = list;
           }
-
-
-
      }
      else
           printf("Error : Can't open the file\n");
@@ -124,23 +127,48 @@ void readSMS()
      fclose(fileToRead);
 }
 
+// void displayList()
+// {
+//      ListWord *list = _head;
+//
+//      while(list!=NULL)
+//      {
+//           printf("Word : %s\n",list->word );
+//           list=list->next;
+//
+//      }
+// }
+
+bool emptyFile(FILE *file)
+{
+     bool value=false;
+
+     fseek(file,0,SEEK_END);
+     if(ftell(file)==0)
+          value=true;
+
+     return value;
+
+}
+
 
 
 void writeWordIntoDic(char string[])
 {
-     FILE *file=fopen("dictionnaire.txt","r+");
+     FILE *file=fopen("/home/niarkx/Seafile/Documents/Ismin_EI_2017/semestre2/algo_prog2/projet/predictive_C/dictionnaire.txt","r+");
      int cursor=0;
      char word[MAX_LENGTH];
-     FILE *fileCopy=fopen("dictionnaire_tmp.txt","w+");
+     FILE *fileCopy=fopen("/home/niarkx/Seafile/Documents/Ismin_EI_2017/semestre2/algo_prog2/projet/predictive_C/dictionnaire_tmp.txt","w+");
      bool done=false;
      int occurence=0;
+     bool empty;
 
      if (file!=NULL && fileCopy!=NULL) {
           rewind(file);
-
-          while(fscanf(file, "%s %d", word, &occurence)!=EOF)
+          empty=emptyFile(file);
+          if(empty)
           {
-               if(done!=true)
+               while(fscanf(file, "%s %d", word, &occurence)!=EOF)
                {
                     if(strcoll(word,string)<0)
                     {
@@ -159,11 +187,50 @@ void writeWordIntoDic(char string[])
                          done=true;
                     }
                }
-               else
-               {
-                    fprintf(fileCopy,"%s %d\n",word,occurence);
-               }
           }
+          else
+          {
+
+          }
+          // if(fgetc(file)==EOF)
+          // {
+          //      printf("La\n" );
+          //      //fprintf(fileCopy,"%s %d\n",string,1);
+          // }
+          // else
+          // {
+          //      while(fscanf(file, "%s %d", word, &occurence)!=EOF)
+          //      {
+          //           if(done!=true)
+          //           {
+          //                //if(strcoll(string,word)<0)
+          //                //printf("%s\n",word );
+          //                if(strcoll(word,string)<0)
+          //                {
+          //                     fprintf(fileCopy, "%s %d\n",word,occurence );
+          //                }
+          //                else if(strcoll(word,string)==0)
+          //                {
+          //                     occurence++;
+          //                     fprintf(fileCopy,"%s %d\n",word, occurence);
+          //                     done=true;
+          //                }
+          //                else
+          //                {
+          //                     fprintf(fileCopy,"%s %d\n",string,1);
+          //                     fprintf(fileCopy,"%s %d\n",word,occurence);
+          //                     done=true;
+          //                }
+          //           }
+          //           else
+          //           {
+          //                fprintf(fileCopy,"%s %d\n",word,occurence);
+          //           }
+          //      }
+          //
+          // }
+
+
      }
      else
           printf("Error : Can't read the file\n");
