@@ -27,7 +27,7 @@ typedef struct _Mot
 }Mot;
 
 Mot** creation();
-unsigned long long hachage(char monmot[Taille_max]);
-void insertion(Mot **tab, char monmot[Taille_max]);
-Mot** lecture_fichier();
-void recherche(Mot **tab, char motatrouver[Taille_max]);
+unsigned long long hachage(char monmot[Taille_max], int n);
+void insertion(Mot **tab, char monmot[Taille_max], int n);
+Mot** lecture_fichier(int n);
+Mot* recherche(Mot **tab, char motatrouver[Taille_max], int n);

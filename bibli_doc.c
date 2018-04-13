@@ -27,10 +27,10 @@ typedef struct _Mot
 }Mot;
 
 Mot** creation();
-unsigned long long hachage(char monmot[Taille_max]);
-void insertion(Mot **tab, char monmot[Taille_max]);
-Mot** lecture_fichier();
-void recherche(Mot **tab, char motatrouver[Taille_max]);
+unsigned long long hachage(char monmot[Taille_max], int n);
+void insertion(Mot **tab, char monmot[Taille_max], int n);
+Mot** lecture_fichier(int n);
+Mot* recherche(Mot **tab, char motatrouver[Taille_max], int n);
 
 Mot** creation()
 {
@@ -46,12 +46,12 @@ Mot** creation()
 
 
 
-unsigned long long hachage(char monmot[Taille_max])
+unsigned long long hachage(char monmot[Taille_max], int n)
 {
 	unsigned long long hach;
 	hach = 0;
 	int i=0;
-	while (monmot[i] != '\0')
+	while (monmot[i] != '\0' && i<n)
 	{
 		hach = hach + monmot[i]*(128^i);
 		i++;
@@ -60,9 +60,9 @@ unsigned long long hachage(char monmot[Taille_max])
 	return hach;
 }
 
-void insertion(Mot **tab, char monmot[Taille_max])
+void insertion(Mot **tab, char monmot[Taille_max], int n)
 {
-	unsigned long long placement = hachage(monmot);
+	unsigned long long placement = hachage(monmot, n);
 	Mot *maillon = malloc(sizeof(Mot));
 	strcpy(maillon -> lemot, monmot);
 	Mot *ptr = tab[placement];
@@ -76,26 +76,26 @@ void insertion(Mot **tab, char monmot[Taille_max])
 
 
 
-Mot** lecture_fichier()
+Mot** lecture_fichier(int n)
 {
 	Mot **tab = creation();
-	FILE *fp = fopen("dictionnaire.txt", "r");
+	FILE *fp = fopen("french_dic.txt", "r");
 	char monmot[Taille_max];
 	while (fscanf(fp, "%s \n", monmot) != EOF)
 	{
-		insertion(tab, monmot);
+		insertion(tab, monmot, n);
 	}
 	return tab;
 }
 
-void recherche(Mot **tab, char motatrouver[Taille_max])
+Mot* recherche(Mot **tab, char motatrouver[Taille_max], int n)
 {
 	int trouve = 0;
-	unsigned long long placement = hachage(motatrouver);
+	unsigned long long placement = hachage(motatrouver, n);
 	Mot* ptr = tab[placement];
 	while (ptr != NULL && trouve != 1)
 	{
-		if (strcmp(ptr -> lemot, motatrouver) == 0)
+		if (strncmp(ptr -> lemot, motatrouver, n) == 0)
 		{
 			trouve = 1;
 		}
@@ -103,10 +103,10 @@ void recherche(Mot **tab, char motatrouver[Taille_max])
 	}
 	if (trouve == 1)
 	{
-		printf("Le mot est dans le dictionnaire \n");
+		return ptr -> prec;
 	}
-	else
+	else 
 	{
-		printf("Le mot n'est pas dans le dictionnaire \n");
+		return NULL;
 	}
 }

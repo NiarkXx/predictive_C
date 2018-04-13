@@ -110,6 +110,7 @@ void selectMode()
 
 void typeSMSPredictive()
 {
+  Mot** dico = (Mot **)malloc(sizeof(Mot*));
   clear();
   cleanBuffer();
   int input=0;
@@ -120,12 +121,27 @@ void typeSMSPredictive()
   {
     clear();
     printf("Type your SMS\n");
-    printf("1) Word 1   2) Word 2   3) Word 3\n" );
-    printf("%s ", smsArray);
-    printf("%s", currentWord);
-    saisie = getch();
+    if(vide)
+    {
+          printf("%s ", smsArray);
+          saisie = getch();
+    }
+    else
+     {
+          dico = lecture_fichier(strlen(currentWord));
+          printf("1) %s 2) %s 3) %s\n",recherche(dico, currentWord, strlen(currentWord)) -> lemot, recherche(dico, currentWord, strlen(currentWord)) -> lemot, recherche(dico, currentWord, strlen(currentWord)) -> lemot);
+          // printf("Word 1 Word 2 Word 3\n");
+          printf("%s ", smsArray);
+          printf("%s", currentWord);
+          saisie = getch();
+    }
+    
     if(saisie == ' ')
     {
+      if(!vide)
+      {
+          free(dico);
+      }
       strcat(smsArray, " ");
       strcat(smsArray, currentWord);
       strcpy(currentWord, " ");
@@ -134,26 +150,30 @@ void typeSMSPredictive()
     }
     else if(saisie == '/')
     {
+          if(!vide)
+          {
+               free(dico);
+          }
       scanf("%d",&input );
       cleanBuffer();
       switch (input) {
         case 1:
         strcat(smsArray, " ");
-        strcat(smsArray, "Word 1");
+        strcat(smsArray, recherche(dico, currentWord, strlen(currentWord)) -> lemot);
         strcpy(currentWord, " ");
         currentWord[0]='\0';
         vide = true;
         break;
         case 2:
         strcat(smsArray, " ");
-        strcat(smsArray, "Word 2");
+        strcat(smsArray, recherche(dico, currentWord, strlen(currentWord)) -> lemot);
         strcpy(currentWord, " ");
         currentWord[0]='\0';
         vide = true;
         break;
         case 3:
         strcat(smsArray, " ");
-        strcat(smsArray, "Word 3");
+        strcat(smsArray, recherche(dico, currentWord, strlen(currentWord)) -> lemot);
         strcpy(currentWord, " ");
         currentWord[0]='\0';
         vide = true;
@@ -165,11 +185,19 @@ void typeSMSPredictive()
     }
     else if(saisie != '\n' && vide)
     {
+          if(!vide)
+          {
+               free(dico);
+          }
       currentWord[0] = saisie;
       vide = false;
     }
     else if(saisie != '\n')
     {
+          if(!vide)
+          {
+               free(dico);
+          }
       strcat(currentWord, &saisie);
     }
   }while(saisie != '\n');
