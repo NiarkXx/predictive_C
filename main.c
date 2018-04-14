@@ -146,6 +146,12 @@ void typeSMSPredictive()
                {
                 proposition_3_words(word_dic1, word_dic2, word_dic3, nbr_word);
                }
+               printf("%s\n",word1 -> lemot );
+               printf("%s\n",word2 -> lemot );
+               printf("%s\n",word3 -> lemot );
+               printf("%s\n",word_dic1 -> lemot );
+               printf("%s\n",word_dic2 -> lemot );
+               printf("%s\n",word_dic3 -> lemot );
                printf("1) %s %s 2) %s %s 3) %s %s\n", word1->lemot, word_dic1 -> lemot, word2->lemot,  word_dic2 -> lemot, word3->lemot, word_dic3 -> lemot);
 // printf("Word 1 Word 2 Word 3\n");
                printf("%s ", smsArray);

@@ -132,11 +132,14 @@ Motpred* recherche_pred(Motpred **tab, char motatrouver[Taille_max_pred], int n)
 		{
 			trouve = 1;
 		}
-		ptr = ptr -> suiv;
+		else
+		{
+			ptr = ptr -> suiv;
+		}
 	}
 	if (trouve == 1)
 	{
-		return ptr -> prec;
+		return ptr;
 	}
 	else 
 	{
@@ -155,11 +158,14 @@ Motpred* recherche_2eme_pred(Motpred **tab, char motatrouver[Taille_max_pred], i
 		{
 			trouve = 1;
 		}
-		ptr = ptr -> suiv;
+		else
+		{
+			ptr = ptr -> suiv;
+		}
 	}
 	if (trouve == 1)
 	{
-		return ptr -> prec;
+		return ptr;
 	}
 	else 
 	{
@@ -170,7 +176,7 @@ Motpred* recherche_2eme_pred(Motpred **tab, char motatrouver[Taille_max_pred], i
 Motpred* recherche_3eme_pred(Motpred **tab, char motatrouver[Taille_max_pred], int n, char mot1[Taille_max_pred], char mot2[Taille_max_pred])
 {
 	int trouve = 0;
-	unsigned long long placement = hachage(motatrouver, n);
+	unsigned long long placement = hachagepred(motatrouver, n);
 	Motpred* ptr = tab[placement];
 	while (ptr != NULL && trouve != 1)
 	{
@@ -178,11 +184,14 @@ Motpred* recherche_3eme_pred(Motpred **tab, char motatrouver[Taille_max_pred], i
 		{
 			trouve = 1;
 		}
-		ptr = ptr -> suiv;
+		else
+		{
+			ptr = ptr -> suiv;
+		}
 	}
 	if (trouve == 1)
 	{
-		return ptr -> prec;
+		return ptr;
 	}
 	else 
 	{

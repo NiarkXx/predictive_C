@@ -101,11 +101,14 @@ Mot* recherche(Mot **tab, char motatrouver[Taille_max], int n)
 		{
 			trouve = 1;
 		}
-		ptr = ptr -> suiv;
+		else
+		{
+			ptr = ptr -> suiv;
+		}
 	}
 	if (trouve == 1)
 	{
-		return ptr -> prec;
+		return ptr;
 	}
 	else 
 	{
@@ -124,11 +127,14 @@ Mot* recherche_2eme(Mot **tab, char motatrouver[Taille_max], int n, char mot1[Ta
 		{
 			trouve = 1;
 		}
-		ptr = ptr -> suiv;
+		else
+		{
+			ptr = ptr -> suiv;
+		}
 	}
 	if (trouve == 1)
 	{
-		return ptr -> prec;
+		return ptr;
 	}
 	else 
 	{
@@ -147,11 +153,14 @@ Mot* recherche_3eme(Mot **tab, char motatrouver[Taille_max], int n, char mot1[Ta
 		{
 			trouve = 1;
 		}
-		ptr = ptr -> suiv;
+		else
+		{
+			ptr = ptr -> suiv;
+		}
 	}
 	if (trouve == 1)
 	{
-		return ptr -> prec;
+		return ptr;
 	}
 	else 
 	{
