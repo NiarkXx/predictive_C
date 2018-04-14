@@ -421,7 +421,7 @@ void proposition_3_words(Mot* word1, Mot* word2, Mot* word3, int compteur_mot)
   if(compteur_mot == 0)
   {
     word1_tmp = recherche(dico, currentWord, strlen(currentWord));
-    if(word1 != NULL)
+    if(word1_tmp != NULL)
     {
       strcpy(word1 -> lemot, word1_tmp -> lemot);
       word2_tmp = recherche_2eme(dico, currentWord, strlen(currentWord), word1 -> lemot);
