@@ -33,6 +33,7 @@ Mot** lecture_fichier(int n);
 Mot* recherche(Mot **tab, char motatrouver[Taille_max], int n);
 Mot* recherche_2eme(Mot **tab, char motatrouver[Taille_max], int n, char mot1[Taille_max]);
 Mot* recherche_3eme(Mot **tab, char motatrouver[Taille_max], int n, char mot1[Taille_max], char mot2[Taille_max]);
+bool recherche_mot(Mot **tab, char motatrouver[Taille_max], int n);
 
 Mot** creation()
 {
@@ -165,5 +166,31 @@ Mot* recherche_3eme(Mot **tab, char motatrouver[Taille_max], int n, char mot1[Ta
 	else 
 	{
 		return NULL;
+	}
+}
+
+bool recherche_mot(Mot **tab, char motatrouver[Taille_max], int n)
+{
+	int trouve = 0;
+	unsigned long long placement = hachage(motatrouver, n);
+	Mot* ptr = tab[placement];
+	while (ptr != NULL && trouve != 1)
+	{
+		if (strcmp(ptr -> lemot, motatrouver) == 0)
+		{
+			trouve = 1;
+		}
+		else
+		{
+			ptr = ptr -> suiv;
+		}
+	}
+	if (trouve == 1)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
 	}
 }

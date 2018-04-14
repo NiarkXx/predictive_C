@@ -1,13 +1,2 @@
-? 6
-Salut 1
-c 1
-ca 4
-comment 5
-commet 1
-couilles 1
-ma 1
-s 1
-salut 2
-tu 1
-va 4
-vas 1
+? 1
+comment 1

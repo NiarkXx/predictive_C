@@ -337,6 +337,8 @@ void writeWordIntoDic(char word_to_add[MAX_LENGTH_WORD])
 
 void insertion_dic(char sentence[MAX_LENGTH])
 {
+     Mot** dico = (Mot**)malloc(sizeof(Mot*));
+     dico = lecture_fichier(MAX_LENGTH_WORD);
      int i = 1;
      int j = 0;
      char word[MAX_LENGTH_WORD];
@@ -345,9 +347,14 @@ void insertion_dic(char sentence[MAX_LENGTH])
      {
           if(sentence[i] == ' ')
           {
-               writeWordIntoDic(word);
+               if (recherche_mot(dico, word, MAX_LENGTH_WORD))
+               {
+                    writeWordIntoDic(word);
+               }
+
                initArray(word);
-               j = 0;
+               j = 0;  
+                  
           }
           else  
           {
