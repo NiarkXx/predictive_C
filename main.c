@@ -42,9 +42,14 @@ char currentWord[MAX_LENGTH_WORD];
 //----------------- MAIN -----------------
 int main(int argc, char const *argv[]) {
 
+    Motpred *mon_mot = (Motpred *)malloc(sizeof(Motpred));
+    strcpy(mon_mot -> lemot, "avion");
+    mon_mot -> occur = 2;
+    Mot* mot2 = (Mot *)mon_mot;
+    printf("%s\n", mot2->lemot);
+    free(mot2);
 
-
-     menu();
+     //menu();
 
 
      return 0;
@@ -131,26 +136,7 @@ void typeSMSPredictive()
           }
           else
           {
-               dico = lecture_fichier(strlen(currentWord));
-               word1 =  recherche(dico, currentWord, strlen(currentWord)) ;
-               if(word1!=NULL)
-               {
-                  word2 = recherche_2eme(dico, currentWord, strlen(currentWord), word1->lemot);
-
-               }
-               else
-               {
-                  word2 = NULL;
-               }
-               if(word1!= NULL && word2!=NULL)
-               {
-                  word3 = recherche_3eme(dico, currentWord, strlen(currentWord), word1->lemot, word2->lemot);
-
-               }
-               else
-               {
-                  word3 = NULL;
-               }
+               
                printf("1) %s 2) %s 3) %s\n", word1->lemot, word2->lemot, word3->lemot);
 // printf("Word 1 Word 2 Word 3\n");
                printf("%s ", smsArray);
@@ -223,6 +209,10 @@ void typeSMSPredictive()
                strcat(currentWord, &saisie);
           }
      }while(saisie != '\n');
+
+     free(word1);
+     free(word2);
+     free(word3);
 
      strcat(smsArray, " ");
      strcat(smsArray, currentWord);
@@ -365,4 +355,47 @@ void initArray(char *array)
 {
      for (int i=0;i<MAX_LENGTH_WORD;i++)
           array[i]='\0';
+}
+
+void proposition_3_words(Motpred* word1, Motpred* word2, Motpred* word3)
+{
+  int compteur_mot = 0;
+  dico = lecture_fichier_pred(strlen(currentWord));
+  word1 =  recherche_pred(dico, currentWord, strlen(currentWord)) ;
+  if(word1 == NULL)
+  {
+    dico = lecture_fichier(strlen(currentWord));
+  }
+  else
+  {
+    compteur_mot = 1;
+    word2 = recherche_2eme_pred(dico, currentWord, strlen(currentWord), word1->lemot);
+    if(word2 != NULL)
+    {
+      compteur_mot = 2;
+      word3 = recherche_3eme(dico, currentWord, strlen(currentWord), word1->lemot, word2->lemot);
+      if(word3 != NULL)
+      {
+        compteur_mot = 3;
+      }
+    }
+    else
+    {
+      dico = lecture_fichier(strlen(currentWord));
+      word2 = recherche_2eme(dico, currentWord, strlen(currentWord), word1 -> lemot);
+    }
+  }
+  if(word1 != NULL && word2!=NULL)
+  {
+    compteur_mot = 2;
+    word3 = recherche_3eme(dico, currentWord, strlen(currentWord), word1->lemot, word2->lemot);
+  }
+  else
+  {
+    word3 = NULL;
+  }
+  if(word3 != NULL && word1!= NULL && word2 != NULL)
+  {
+    compteur_mot = 3;
+  }
 }

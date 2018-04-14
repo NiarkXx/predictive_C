@@ -28,11 +28,14 @@ typedef struct _Motpred
 }Motpred;
 
 Motpred** creationpred();
-unsigned long long hachagepred(char monmot[Taille_max_pred]);
-void insertionpred(Motpred **tab, char monmot[Taille_max_pred], int occurance);
-Motpred** lecture_fichier_pred();
-Motpred* recherche_pred(Motpred **tab, char motatrouver[Taille_max_pred]);
-Motpred* recherche_pour_ajout(Motpred **tab, char motatrouver[Taille_max_pred]);
+unsigned long long hachagepred(char monmot[Taille_max_pred], int n);
+void insertionpred(Motpred **tab, char monmot[Taille_max_pred], int occurance, int n);
+Motpred** lecture_fichier_pred(int n);
+Motpred* recherche_pred(Motpred **tab, char motatrouver[Taille_max_pred], int n);
+Motpred* recherche_pour_ajout(Motpred **tab, char motatrouver[Taille_max_pred], int n);
+Motpred* recherche_2eme_pred(Motpred **tab, char motatrouver[Taille_max_pred], int n, char mot1[Taille_max_pred]);
+Motpred* recherche_3eme_pred(Motpred **tab, char motatrouver[Taille_max_pred], int n, char mot1[Taille_max_pred], char mot2[Taille_max_pred]);
+
 
 Motpred** creationpred()
 {
@@ -46,12 +49,12 @@ Motpred** creationpred()
 	return tab;
 }
 
-unsigned long long hachagepred(char monmot[Taille_max_pred])
+unsigned long long hachagepred(char monmot[Taille_max_pred], int n)
 {
 	unsigned long long hach;
 	hach = 0;
 	int i=0;
-	while (monmot[i] != '\0')
+	while (monmot[i] != '\0' && i<n)
 	{
 		hach = hach + monmot[i]*(128^i);
 		i++;
@@ -60,9 +63,9 @@ unsigned long long hachagepred(char monmot[Taille_max_pred])
 	return hach;
 }
 
-void insertionpred(Motpred **tab, char monmot[Taille_max_pred], int occurance)
+void insertionpred(Motpred **tab, char monmot[Taille_max_pred], int occurance, int n)
 {
-	unsigned long long placement = hachagepred(monmot);
+	unsigned long long placement = hachagepred(monmot, n);
 	Motpred *maillon = malloc(sizeof(Motpred));
 	strcpy(maillon -> lemot, monmot);
 	maillon -> occur = occurance; 
@@ -75,23 +78,23 @@ void insertionpred(Motpred **tab, char monmot[Taille_max_pred], int occurance)
 	maillon -> prec = ptr;
 }
 
-Motpred** lecture_fichier_pred()
+Motpred** lecture_fichier_pred(int n)
 {
 	Motpred **tab = creationpred();
 	FILE *fp = fopen("dictionnaire.txt", "r");
 	char monmot[Taille_max_pred];
 	int occurance;
-	while (fscanf(fp, "%s %d \n", monmot, &occurance) != EOF)
+	while (fscanf(fp, "%s %d\n", monmot, &occurance) != EOF)
 	{	
-		insertionpred(tab, monmot, occurance);
+		insertionpred(tab, monmot, occurance, n);
 	}
 	return tab;
 }
 
-Motpred* recherche_pour_ajout(Motpred **tab, char motatrouver[Taille_max_pred])
+Motpred* recherche_pour_ajout(Motpred **tab, char motatrouver[Taille_max_pred], int n)
 {
 	int trouve = 0;
-	unsigned long long placement = hachagepred(motatrouver);
+	unsigned long long placement = hachagepred(motatrouver, n);
 	Motpred* ptr = tab[placement];
 	while (ptr != NULL && trouve != 1)
 	{
@@ -118,14 +121,60 @@ Motpred* recherche_pour_ajout(Motpred **tab, char motatrouver[Taille_max_pred])
 
 
 
-Motpred* recherche_pred(Motpred **tab, char motatrouver[Taille_max_pred])
+Motpred* recherche_pred(Motpred **tab, char motatrouver[Taille_max_pred], int n)
 {
 	int trouve = 0;
-	unsigned long long placement = hachagepred(motatrouver);
+	unsigned long long placement = hachagepred(motatrouver, n);
 	Motpred* ptr = tab[placement];
 	while (ptr != NULL && trouve != 1)
 	{
 		if (strcmp(ptr -> lemot, motatrouver) == 0)
+		{
+			trouve = 1;
+		}
+		ptr = ptr -> suiv;
+	}
+	if (trouve == 1)
+	{
+		return ptr -> prec;
+	}
+	else 
+	{
+		return NULL;
+	}
+}
+
+Motpred* recherche_2eme_pred(Motpred **tab, char motatrouver[Taille_max_pred], int n, char mot1[Taille_max_pred])
+{
+	int trouve = 0;
+	unsigned long long placement = hachagepred(motatrouver, n);
+	Motpred* ptr = tab[placement];
+	while (ptr != NULL && trouve != 1)
+	{
+		if (strncmp(ptr -> lemot, motatrouver, n) == 0 && strcmp(ptr->lemot, mot1)!=0)
+		{
+			trouve = 1;
+		}
+		ptr = ptr -> suiv;
+	}
+	if (trouve == 1)
+	{
+		return ptr -> prec;
+	}
+	else 
+	{
+		return NULL;
+	}
+}
+
+Motpred* recherche_3eme_pred(Motpred **tab, char motatrouver[Taille_max_pred], int n, char mot1[Taille_max_pred], char mot2[Taille_max_pred])
+{
+	int trouve = 0;
+	unsigned long long placement = hachage(motatrouver, n);
+	Motpred* ptr = tab[placement];
+	while (ptr != NULL && trouve != 1)
+	{
+		if (strncmp(ptr -> lemot, motatrouver, n) == 0 && strcmp(ptr->lemot, mot1)!=0 && strcmp(ptr->lemot, mot2)!=0)
 		{
 			trouve = 1;
 		}

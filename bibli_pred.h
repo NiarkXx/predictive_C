@@ -28,8 +28,10 @@ typedef struct _Motpred
 }Motpred;
 
 Motpred** creationpred();
-unsigned long long hachagepred(char monmot[Taille_max_pred]);
-void insertionpred(Motpred **tab, char monmot[Taille_max_pred]);
-Motpred** lecture_fichier_pred();
-Motpred* recherche_pred(Motpred **tab, char motatrouver[Taille_max_pred]);
-Motpred* recherche_pour_ajout(Motpred **tab, char motatrouver[Taille_max_pred]);
+unsigned long long hachagepred(char monmot[Taille_max_pred], int n);
+void insertionpred(Motpred **tab, char monmot[Taille_max_pred], int occurance, int n);
+Motpred** lecture_fichier_pred(int n);
+Motpred* recherche_pred(Motpred **tab, char motatrouver[Taille_max_pred], int n);
+Motpred* recherche_pour_ajout(Motpred **tab, char motatrouver[Taille_max_pred], int n);
+Motpred* recherche_2eme_pred(Motpred **tab, char motatrouver[Taille_max_pred], int n, char mot1[Taille_max_pred]);
+Motpred* recherche_3eme_pred(Motpred **tab, char motatrouver[Taille_max_pred], int n, char mot1[Taille_max_pred], char mot2[Taille_max_pred]);
