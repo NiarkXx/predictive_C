@@ -128,7 +128,7 @@ Motpred* recherche_pred(Motpred **tab, char motatrouver[Taille_max_pred], int n)
 	Motpred* ptr = tab[placement];
 	while (ptr != NULL && trouve != 1)
 	{
-		if (strcmp(ptr -> lemot, motatrouver) == 0)
+		if (strncmp(ptr -> lemot, motatrouver, n) == 0)
 		{
 			trouve = 1;
 		}

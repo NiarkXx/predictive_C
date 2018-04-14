@@ -141,17 +141,11 @@ void typeSMSPredictive()
           }
           else
           {
-               nbr_word = proposition_3_words_pred(word1, word1, word3);
+               nbr_word = proposition_3_words_pred(word1, word2, word3);
                if(nbr_word != 3)
                {
                 proposition_3_words(word_dic1, word_dic2, word_dic3, nbr_word);
                }
-               printf("%s\n",word1 -> lemot );
-               printf("%s\n",word2 -> lemot );
-               printf("%s\n",word3 -> lemot );
-               printf("%s\n",word_dic1 -> lemot );
-               printf("%s\n",word_dic2 -> lemot );
-               printf("%s\n",word_dic3 -> lemot );
                printf("1) %s %s 2) %s %s 3) %s %s\n", word1->lemot, word_dic1 -> lemot, word2->lemot,  word_dic2 -> lemot, word3->lemot, word_dic3 -> lemot);
 // printf("Word 1 Word 2 Word 3\n");
                printf("%s ", smsArray);
@@ -362,7 +356,7 @@ int proposition_3_words_pred(Motpred* word1, Motpred* word2, Motpred* word3)
   Motpred** dicopred = (Motpred**)malloc(sizeof(Motpred*));
   int compteur_mot = 0;
   dicopred = lecture_fichier_pred(strlen(currentWord));
-  word1 =  recherche_pred(dicopred, currentWord, strlen(currentWord)) ;
+  strcpy(word1->lemot, recherche_pred(dicopred, currentWord, strlen(currentWord))->lemot);
   if(word1 == NULL) //-------La recherche prédictive ne trouve pas de mot correspondant
   {
     word2 = NULL;
@@ -371,11 +365,11 @@ int proposition_3_words_pred(Motpred* word1, Motpred* word2, Motpred* word3)
   else //-----------Si la recherche prédictive a trouvé un mot
   {
     compteur_mot = 1;
-    word2 = recherche_2eme_pred(dicopred, currentWord, strlen(currentWord), word1->lemot); //---------On continue la recherche prédictive pour un 2ème mot
+    strcpy(word2 -> lemot, recherche_2eme_pred(dicopred, currentWord, strlen(currentWord), word1->lemot) -> lemot); //---------On continue la recherche prédictive pour un 2ème mot
     if(word2 != NULL)//------------------ La recherche prédictive a trouvé un deuxième mot
     {
       compteur_mot = 2;
-      word3 = recherche_3eme_pred(dicopred, currentWord, strlen(currentWord), word1->lemot, word2->lemot); //---------On continue la recherche prédictive pour un 3ème mot
+      strcpy(word3 -> lemot, recherche_3eme_pred(dicopred, currentWord, strlen(currentWord), word1->lemot, word2->lemot) ->lemot); //---------On continue la recherche prédictive pour un 3ème mot
       if(word3 != NULL)//-------------La recherche prédictive a trouvé un troisième mot
       {
         compteur_mot = 3;
@@ -396,10 +390,10 @@ void proposition_3_words(Mot* word1, Mot* word2, Mot* word3, int compteur_mot)
   dico = lecture_fichier(strlen(currentWord));
   if(compteur_mot == 0)
   {
-    word1 = recherche(dico, currentWord, strlen(currentWord));
+    strcpy(word1 -> lemot, recherche(dico, currentWord, strlen(currentWord)) -> lemot);
     if(word1 != NULL)
     {
-      word2 = recherche_2eme(dico, currentWord, strlen(currentWord), word1 -> lemot);
+      strcpy(word2 -> lemot, recherche_2eme(dico, currentWord, strlen(currentWord), word1 -> lemot) -> lemot);
     }
     else
     {
@@ -408,10 +402,10 @@ void proposition_3_words(Mot* word1, Mot* word2, Mot* word3, int compteur_mot)
   }
   else if(compteur_mot == 1)
   {
-    word2 = recherche_2eme(dico, currentWord, strlen(currentWord), word1 -> lemot);
+    strcpy(word2 -> lemot, recherche_2eme(dico, currentWord, strlen(currentWord), word1 -> lemot) -> lemot);
     if(word2 != NULL)
     {
-      word3 = recherche_3eme(dico, currentWord, strlen(currentWord), word1 -> lemot, word2 -> lemot);
+      strcpy(word3 -> lemot, recherche_3eme(dico, currentWord, strlen(currentWord), word1 -> lemot, word2 -> lemot) -> lemot);
     }
     else
     {
@@ -420,7 +414,7 @@ void proposition_3_words(Mot* word1, Mot* word2, Mot* word3, int compteur_mot)
   }
   else  if(compteur_mot == 2)
   {
-    word3 = recherche_3eme(dico, currentWord, strlen(currentWord), word1 -> lemot, word2 -> lemot);
+    strcpy(word3 -> lemot, recherche_3eme(dico, currentWord, strlen(currentWord), word1 -> lemot, word2 -> lemot) -> lemot);
   }
   free(dico);
 }
