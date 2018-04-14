@@ -122,7 +122,7 @@ void typeSMSPredictive()
      int input=0;
      char saisie;
      char *wordAfter;
-     bool vide;
+     bool vide = true;
      int nbr_word;
      Motpred* word1 = (Motpred *)malloc(sizeof(Motpred));
      Motpred* word2 = (Motpred *)malloc(sizeof(Motpred));
@@ -206,6 +206,7 @@ void typeSMSPredictive()
           else if(saisie != '\n')
           {
                strcat(currentWord, &saisie);
+               vide = false;
           }
      }while(saisie != '\n');
 
