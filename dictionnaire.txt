@@ -1,8 +1,10 @@
-? 4
+? 6
 c 1
-ca 3
-comment 3
+ca 4
+comment 5
 commet 1
 s 1
 salut 2
-va 3
+tu 1
+va 4
+vas 1
