@@ -42,14 +42,14 @@ char currentWord[MAX_LENGTH_WORD];
 //----------------- MAIN -----------------
 int main(int argc, char const *argv[]) {
 
-    Motpred *mon_mot = (Motpred *)malloc(sizeof(Motpred));
-    strcpy(mon_mot -> lemot, "avion");
-    mon_mot -> occur = 2;
-    Mot* mot2 = (Mot *)mon_mot;
-    printf("%s\n", mot2->lemot);
-    free(mot2);
+    // Motpred *mon_mot = (Motpred *)malloc(sizeof(Motpred));
+    // strcpy(mon_mot -> lemot, "avion");
+    // mon_mot -> occur = 2;
+    // Mot* mot2 = (Mot *)mon_mot;
+    // printf("%s\n", mot2->lemot);
+    // free(mot2);
 
-     //menu();
+     menu();
 
 
      return 0;
@@ -115,16 +115,15 @@ void selectMode()
 
 void typeSMSPredictive()
 {
-     Mot** dico = (Mot **)malloc(sizeof(Mot*));
      clear();
      cleanBuffer();
      int input=0;
      char saisie;
      char *wordAfter;
      bool vide;
-     Mot* word1 = (Mot *)malloc(sizeof(Mot));
-     Mot* word2 = (Mot *)malloc(sizeof(Mot));
-     Mot* word3 = (Mot *)malloc(sizeof(Mot));
+     Motpred* word1 = (Motpred *)malloc(sizeof(Motpred));
+     Motpred* word2 = (Motpred *)malloc(sizeof(Motpred));
+     Motpred* word3 = (Motpred *)malloc(sizeof(Motpred));
      do
      {
           clear();
@@ -146,10 +145,6 @@ void typeSMSPredictive()
 
           if(saisie == ' ')
           {
-               if(!vide)
-               {
-                    free(dico);
-               }
                strcat(smsArray, " ");
                strcat(smsArray, currentWord);
                strcpy(currentWord, " ");
@@ -158,10 +153,6 @@ void typeSMSPredictive()
           }
           else if(saisie == '/')
           {
-               if(!vide)
-               {
-                    free(dico);
-               }
                scanf("%d",&input );
                cleanBuffer();
                switch (input) {
@@ -193,19 +184,11 @@ void typeSMSPredictive()
           }
           else if(saisie != '\n' && vide)
           {
-               if(!vide)
-               {
-                    free(dico);
-               }
                currentWord[0] = saisie;
                vide = false;
           }
           else if(saisie != '\n')
           {
-               if(!vide)
-               {
-                    free(dico);
-               }
                strcat(currentWord, &saisie);
           }
      }while(saisie != '\n');
@@ -359,43 +342,80 @@ void initArray(char *array)
 
 void proposition_3_words(Motpred* word1, Motpred* word2, Motpred* word3)
 {
+  Motpred** dicopred = (Motpred**)malloc(sizeof(Motpred*));
+  Mot **dico = (Mot**)malloc(sizeof(Mot*));
   int compteur_mot = 0;
-  dico = lecture_fichier_pred(strlen(currentWord));
-  word1 =  recherche_pred(dico, currentWord, strlen(currentWord)) ;
-  if(word1 == NULL)
+  dicopred = lecture_fichier_pred(strlen(currentWord));
+  word1 =  recherche_pred(dicopred, currentWord, strlen(currentWord)) ;
+  if(word1 == NULL) //-------La recherche prédictive ne trouve pas de mot correspondant
   {
-    dico = lecture_fichier(strlen(currentWord));
-  }
-  else
-  {
-    compteur_mot = 1;
-    word2 = recherche_2eme_pred(dico, currentWord, strlen(currentWord), word1->lemot);
-    if(word2 != NULL)
+    dico = lecture_fichier(strlen(currentWord)); //--------On change de dictionnaire, on cherche dans le dictionnaire français
+    word1 = (Mot*)recherche(dico, currentWord, strlen(currentWord));
+    if(word1 != NULL)
     {
-      compteur_mot = 2;
-      word3 = recherche_3eme(dico, currentWord, strlen(currentWord), word1->lemot, word2->lemot);
-      if(word3 != NULL)
+      compteur_mot = 1;
+      word2 = (Mot*)recherche(dico, currentWord, strlen(currentWord));
+      if (word2 != NULL)
       {
-        compteur_mot = 3;
+        compteur_mot = 2;
+        word3 = (Mot*)recherche(dico, currentWord, strlen(currentWord));
+        if (word3 != NULL)
+        {
+          compteur_mot = 3;
+        }
+      }
+      else
+      {
+        word3 = NULL;
       }
     }
     else
     {
-      dico = lecture_fichier(strlen(currentWord));
-      word2 = recherche_2eme(dico, currentWord, strlen(currentWord), word1 -> lemot);
+      word2 = NULL;
+      word3 = NULL;
     }
   }
-  if(word1 != NULL && word2!=NULL)
+  else //-----------Si la recherche prédictive a trouvé un mot
   {
-    compteur_mot = 2;
-    word3 = recherche_3eme(dico, currentWord, strlen(currentWord), word1->lemot, word2->lemot);
+    compteur_mot = 1;
+    word2 = recherche_2eme_pred(dicopred, currentWord, strlen(currentWord), word1->lemot); //---------On continue la recherche prédictive pour un 2ème mot
+    if(word2 != NULL)//------------------ La recherche prédictive a trouvé un deuxième mot
+    {
+      compteur_mot = 2;
+      word3 = recherche_3eme_pred(dicopred, currentWord, strlen(currentWord), word1->lemot, word2->lemot); //---------On continue la recherche prédictive pour un 3ème mot
+      if(word3 != NULL)//-------------La recherche prédictive a trouvé un troisième mot
+      {
+        compteur_mot = 3;
+      }
+      else //-----------------La recherche prédictive n'a pas trouvé de troisième mot
+      {
+        dicopred = lecture_fichier(strlen(currentWord)); //--------On change de dictionnaire, on cherche dans le dictionnaire prédictif
+        word3 = (Mot *)recherche_3eme(dico, currentWord, strlen(currentWord), word1->lemot, word2->lemot);
+        if(word3 != NULL) //-----------------La recherche dans le dicopred français a trouvé un troisième mot
+        {
+          compteur_mot = 3;
+        }
+      }
+    }
+    else //-----------------La recherche prédictive n'a pas trouvé de deuxième mot
+    {
+      dicopred = lecture_fichier(strlen(currentWord)); //--------On change de dictionnaire, on cherche dans le dictionnaire prédictif
+      word2 = (Mot*)recherche_2eme(dico, currentWord, strlen(currentWord), word1 -> lemot); //------------On cherche un deuxième mot dans le dicopred français
+      if(word2 != NULL) //----------------------La recherche dans le dicopred francais a trouvé un deuxième mot
+      {
+        compteur_mot = 2;
+        word3 = (Mot*)recherche_3eme(dico, currentWord, strlen(currentWord), word1->lemot, word2->lemot); //------------------ On cherche un troisième mot dans le dicopred français
+        if(word3 != NULL) //------------------------ La recherche a trouvé un troisième mot dans le dicopred français
+        {
+          compteur_mot = 3;
+        }
+      }
+      else //--------------La recherche dans le dicopred français n'a pas trouvé de deuxième mot
+      {
+        word3 = NULL; //----------------- Le troisième mot est NULL
+      }
+    }
   }
-  else
-  {
-    word3 = NULL;
-  }
-  if(word3 != NULL && word1!= NULL && word2 != NULL)
-  {
-    compteur_mot = 3;
-  }
+  free(dico);
+  free(dicopred);
 }
