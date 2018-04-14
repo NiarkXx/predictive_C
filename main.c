@@ -184,21 +184,42 @@ void typeSMSPredictive()
                switch (input) {
                     case 1:
                     strcat(smsArray, " ");
-                    strcat(smsArray, word1->lemot);
+                    if(nbr_word == 0)
+                    {
+                         strcat(smsArray, word_dic1->lemot);
+                    }
+                    else
+                    {
+                         strcat(smsArray, word1->lemot);
+                    }
                     strcpy(currentWord, " ");
                     currentWord[0]='\0';
                     vide = true;
                     break;
                     case 2:
                     strcat(smsArray, " ");
-                    strcat(smsArray, word2->lemot);
+                    if(nbr_word <= 1)
+                    {
+                         strcat(smsArray, word_dic2->lemot);
+                    }
+                    else
+                    {
+                         strcat(smsArray, word2->lemot);
+                    }
                     strcpy(currentWord, " ");
                     currentWord[0]='\0';
                     vide = true;
                     break;
                     case 3:
                     strcat(smsArray, " ");
-                    strcat(smsArray, word3->lemot);
+                    if(nbr_word <= 2)
+                    {
+                         strcat(smsArray, word_dic3->lemot);
+                    }
+                    else
+                    {
+                         strcat(smsArray, word3->lemot);
+                    }
                     strcpy(currentWord, " ");
                     currentWord[0]='\0';
                     vide = true;
@@ -354,7 +375,7 @@ void insertion_dic(char sentence[MAX_LENGTH])
 
                initArray(word);
                j = 0;  
-                  
+
           }
           else  
           {
