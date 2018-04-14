@@ -1,1 +1,36 @@
-================== SMS PREDICTIVE ==================
+================== SMS PREDICTIVE - V1.0 - 14_04_2018 ==================
+Contient :
+- Makefile
+- dictionnaire.txt
+- main.c
+- smsProf.txt
+- smsRegister.txt
+- bibli_doc.c
+- bibli_doc.h
+- bibli_pred.c
+- bibli_pred.h
+
+
+=================== DESCRIPTION ====================
+
+Ce programme permet de simuler une saisie prédictive de texte en émulant la technologie T9.
+A chauque lettre saisie, une liste de 3 mots est proposée à l'utilisateur. Il peut alors
+sélectionner un des 3 mots. S'il le fait, le nombre d'occurence de ce mot est alors incrémenté
+de 1. Sinon, l'utilisateur peut continuer à écrire.
+Lorsque le programme détecte un espace entre 2 mots (signifiant la fin de l'écriture
+du mot d'intérêt par l'utilisateur) alors on enregistre ce mot dans notre dictionnaire
+de prediction (dictionnaire.txt) en lui attribuant une occurence de 1 s'il n'est pas déjà inscrit.
+S'il existe, on incrémente alors l'occurence de ce mot.
+
+
+=================== Utilisation ====================
+1) Placez vous dans le dossier racine predictive_c
+2)Ouvrez un terminal
+3) taper la commande : Make
+4) Une fois la compilation terminée, tapez la commande : ./smspred
+5) L'application démarre alors.
+
+
+=================== Autheur ====================
+Ludovic Barbier     : ISMIN 1A
+Tomas Barbe         : ISMIN 1A
