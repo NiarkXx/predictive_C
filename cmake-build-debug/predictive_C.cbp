@@ -82,6 +82,18 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/home/niarkx/Seafile/Documents/Ismin_EI_2017/semestre2/algo_prog2/projet/predictive_C/bibli_doc.c">
+			<Option target="predictive_C"/>
+		</Unit>
+		<Unit filename="/home/niarkx/Seafile/Documents/Ismin_EI_2017/semestre2/algo_prog2/projet/predictive_C/bibli_doc.h">
+			<Option target="predictive_C"/>
+		</Unit>
+		<Unit filename="/home/niarkx/Seafile/Documents/Ismin_EI_2017/semestre2/algo_prog2/projet/predictive_C/bibli_pred.c">
+			<Option target="predictive_C"/>
+		</Unit>
+		<Unit filename="/home/niarkx/Seafile/Documents/Ismin_EI_2017/semestre2/algo_prog2/projet/predictive_C/bibli_pred.h">
+			<Option target="predictive_C"/>
+		</Unit>
 		<Unit filename="/home/niarkx/Seafile/Documents/Ismin_EI_2017/semestre2/algo_prog2/projet/predictive_C/testFunction.c">
 			<Option target="predictive_C"/>
 		</Unit>

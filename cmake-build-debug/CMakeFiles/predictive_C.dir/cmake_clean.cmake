@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/predictive_C.dir/bibli_doc.c.o"
+  "CMakeFiles/predictive_C.dir/bibli_pred.c.o"
   "CMakeFiles/predictive_C.dir/testFunction.c.o"
   "predictive_C.pdb"
   "predictive_C"

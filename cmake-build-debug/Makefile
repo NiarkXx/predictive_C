@@ -123,6 +123,60 @@ predictive_C/fast:
 	$(MAKE) -f CMakeFiles/predictive_C.dir/build.make CMakeFiles/predictive_C.dir/build
 .PHONY : predictive_C/fast
 
+bibli_doc.o: bibli_doc.c.o
+
+.PHONY : bibli_doc.o
+
+# target to build an object file
+bibli_doc.c.o:
+	$(MAKE) -f CMakeFiles/predictive_C.dir/build.make CMakeFiles/predictive_C.dir/bibli_doc.c.o
+.PHONY : bibli_doc.c.o
+
+bibli_doc.i: bibli_doc.c.i
+
+.PHONY : bibli_doc.i
+
+# target to preprocess a source file
+bibli_doc.c.i:
+	$(MAKE) -f CMakeFiles/predictive_C.dir/build.make CMakeFiles/predictive_C.dir/bibli_doc.c.i
+.PHONY : bibli_doc.c.i
+
+bibli_doc.s: bibli_doc.c.s
+
+.PHONY : bibli_doc.s
+
+# target to generate assembly for a file
+bibli_doc.c.s:
+	$(MAKE) -f CMakeFiles/predictive_C.dir/build.make CMakeFiles/predictive_C.dir/bibli_doc.c.s
+.PHONY : bibli_doc.c.s
+
+bibli_pred.o: bibli_pred.c.o
+
+.PHONY : bibli_pred.o
+
+# target to build an object file
+bibli_pred.c.o:
+	$(MAKE) -f CMakeFiles/predictive_C.dir/build.make CMakeFiles/predictive_C.dir/bibli_pred.c.o
+.PHONY : bibli_pred.c.o
+
+bibli_pred.i: bibli_pred.c.i
+
+.PHONY : bibli_pred.i
+
+# target to preprocess a source file
+bibli_pred.c.i:
+	$(MAKE) -f CMakeFiles/predictive_C.dir/build.make CMakeFiles/predictive_C.dir/bibli_pred.c.i
+.PHONY : bibli_pred.c.i
+
+bibli_pred.s: bibli_pred.c.s
+
+.PHONY : bibli_pred.s
+
+# target to generate assembly for a file
+bibli_pred.c.s:
+	$(MAKE) -f CMakeFiles/predictive_C.dir/build.make CMakeFiles/predictive_C.dir/bibli_pred.c.s
+.PHONY : bibli_pred.c.s
+
 testFunction.o: testFunction.c.o
 
 .PHONY : testFunction.o
@@ -159,6 +213,12 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... predictive_C"
+	@echo "... bibli_doc.o"
+	@echo "... bibli_doc.i"
+	@echo "... bibli_doc.s"
+	@echo "... bibli_pred.o"
+	@echo "... bibli_pred.i"
+	@echo "... bibli_pred.s"
 	@echo "... testFunction.o"
 	@echo "... testFunction.i"
 	@echo "... testFunction.s"
