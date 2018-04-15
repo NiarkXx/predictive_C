@@ -32,6 +32,12 @@ void insertion_dic(char sentence[MAX_LENGTH]);
 void initArray(char *array);
 int proposition_3_words_pred(Motpred* word1, Motpred* word2, Motpred* word3);
 void proposition_3_words(Mot* word1, Mot* word2, Mot* word3, int compteur_mot);
+bool deleteWordIntoDic();
+void readRegister();
+void typeSMSNonPredictive();
+void saveSMS(char *sms);
+void addWordIntoDic();
+void modifyWordIntoDic();
 
 //----------------- GLOBALS -----------------
 
@@ -44,15 +50,7 @@ char currentWord[MAX_LENGTH_WORD];
 //----------------- MAIN -----------------
 int main(int argc, char const *argv[]) {
 
-    // Motpred *mon_mot = (Motpred *)malloc(sizeof(Motpred));
-    // strcpy(mon_mot -> lemot, "avion");
-    // mon_mot -> occur = 2;
-    // Mot* mot2 = (Mot *)mon_mot;
-    // printf("%s\n", mot2->lemot);
-    // free(mot2);
-
      menu();
-
 
      return 0;
 }
@@ -61,11 +59,12 @@ int main(int argc, char const *argv[]) {
 
 void menu()
 {
+     clear();
      int input=0;
      bool quit=false;
      while(quit == false)
      {
-          clear();
+
           printf("\n\nPredictive Text Simulation \n" );
           printf("---------------------------------\n");
           printf("1) Enable/Disable Predictive Text. ( Currently : " );
@@ -76,34 +75,92 @@ void menu()
                printf("FALSE )\n" );
 
           printf("2) Type a SMS\n" );
-          printf("3) Quit\n" );
+          printf("3) Read the smsRegister\n" );
+          printf("4) Add a word to the prediction Dictionnary\n");
+          printf("5) Delete a word to the prediction Dictionnary\n" );
+          printf("6) Modify a word from the prediction Dictionnary\n");
+          printf("7) Quit\n" );
           scanf("%d",&input );
 
+          input=(int)input;
+
+          
           switch (input) {
+           case 1:
+           enablePredictive= !enablePredictive;
 
-               case 1:
-               enablePredictive= !enablePredictive;
-               break;
+           break;
 
-               case 2:
-               selectMode();
-               break;
-               case 3:
-               quit=true;
-               break;
+           case 2:
+           selectMode();
+           break;
+           case 3:
+           readRegister();
+
+           break;
+
+           case 4:
+           addWordIntoDic();
+           break;
+
+           case 5:
+           deleteWordIntoDic();
+           break;
+
+           case 6:
+           modifyWordIntoDic();
+           break;
+
+           case 7:
+           quit=true;
+           break;
+
+           default:
+           printf("Error: Please type a right value (1 , 2 , 3 , 4 , 5 , 6 or 7) \n");
+           break;
+            
+
           }
      }
 }
 
 void typeSMSNonPredictive()
 {
-     char inputText[MAX_LENGTH];
+    int charNb=0;
+    char buffer[MAX_LENGTH];
 
+    initArray(buffer);
+    cleanBuffer();
+    clear();
      printf("Type your text : \n" );
-// cleanBuffer();
-//readInput(inputText);
+
+     fgets(smsArray,MAX_LENGTH,stdin);
+
+     while(smsArray[charNb] !='\n')
+     {
+       buffer[charNb]=smsArray[charNb];
+       charNb++;
+     }
+
+     saveSMS(buffer);
+     initArray(smsArray);
 }
 
+void saveSMS(char *sms)
+{
+  time_t timestamp;
+  FILE *file=fopen("smsRegister.txt","a");
+
+  timestamp= time(NULL);
+
+  if(file!=NULL)
+    fprintf(file, "%s --> %s",sms,ctime(&timestamp));
+
+  else
+    printf("Error : Can't open the file\n" );
+
+  fclose(file);
+}
 
 void selectMode()
 {
@@ -163,7 +220,6 @@ void typeSMSPredictive()
                {
                     printf("1) %s 2) %s 3) %s\n", word1 -> lemot, word2 -> lemot, word3 -> lemot);
                }
-// printf("Word 1 Word 2 Word 3\n");
                printf("%s ", smsArray);
                printf("%s", currentWord);
                saisie = getch();
@@ -285,6 +341,49 @@ int getch(void) {
      res=tcsetattr(STDIN_FILENO, TCSANOW, &org_opts);
      assert(res==0);
      return(c);
+}
+
+void addWordIntoDic()
+{
+     Motpred** dicopred = (Motpred**)malloc(sizeof(Motpred*));
+     dicopred = lecture_fichier_pred((int)MAX_LENGTH_WORD);
+     char wordToAdd[MAX_LENGTH_WORD];
+     clear();
+     printf("Type the word to add :\n");
+     scanf("%30s", wordToAdd);
+     if(recherche_pred(dicopred, wordToAdd, MAX_LENGTH_WORD) == NULL)
+     {
+          writeWordIntoDic(wordToAdd);
+     }
+     else
+     {
+          printf("This word already exists in the prediction dictionnary\n");
+     }
+}
+
+void modifyWordIntoDic()
+{
+     Motpred** dicopred = (Motpred**)malloc(sizeof(Motpred*));
+     dicopred = lecture_fichier_pred((int)MAX_LENGTH_WORD);
+     char wordToAdd[MAX_LENGTH_WORD];
+     bool done = false;
+     clear();
+     done = deleteWordIntoDic();
+     if(done)
+     {
+          printf("Type the word to add :\n");
+          scanf("%30s", wordToAdd);
+          if(recherche_pred(dicopred, wordToAdd, MAX_LENGTH_WORD) == NULL)
+          {
+               writeWordIntoDic(wordToAdd);
+          }
+          else
+          {
+               printf("This word already exists in the prediction dictionnary\n");
+          }
+     }
+     
+
 }
 
 void writeWordIntoDic(char word_to_add[MAX_LENGTH_WORD])
@@ -515,4 +614,100 @@ void proposition_3_words(Mot* word1, Mot* word2, Mot* word3, int compteur_mot)
       }
   }
   free(dico);
+}
+
+bool deleteWordIntoDic()
+{
+     FILE *file = fopen("dictionnaire.txt","r+");
+     FILE *fileCopy = fopen("dictionnaire_tmp.txt","w+");
+     bool done = false;
+     char word_dic[MAX_LENGTH_WORD];
+     int occurence = 1;
+     int removeTest;
+     int renameTest;
+     char wordToDelete[MAX_LENGTH_WORD];
+     Motpred** dico = (Motpred**)malloc(sizeof(Motpred*));
+
+     if (file != NULL && fileCopy != NULL)
+      {
+        rewind(file);
+        if (fgetc(file) == EOF) {
+           printf("Error : The file is empty\n" );
+        }
+        else
+         {
+           rewind(file);
+           initArray(word_dic);
+           cleanBuffer();
+           printf("Type the word to delete : \n");
+
+           scanf("%30s",wordToDelete);
+
+           dico = lecture_fichier_pred((int)strlen(wordToDelete));
+
+           if(recherche_pred(dico, wordToDelete, (int)strlen(wordToDelete))!=NULL)
+           {
+             while(fscanf(file, "%s %d", word_dic, &occurence)==2)
+             {
+               if(strcmp(wordToDelete,word_dic)!=0)
+               {
+                 fprintf(fileCopy, "%s %d\n",word_dic,occurence );
+               }
+               
+             }
+             done=true;
+           }
+           else
+            printf("Error : This word does not exists in the file \n");
+         }
+     }
+     else
+      printf("Error : Can't open the file");
+
+     fclose(file);
+     fclose(fileCopy);
+
+     if(done)
+     {
+       removeTest = remove("dictionnaire.txt");
+       if (removeTest != 0)
+       printf("Error to remove the file");
+
+       renameTest = rename("dictionnaire_tmp.txt", "dictionnaire.txt");
+
+       if (renameTest != 0) {
+         printf("Error to rename");
+     }
+     else
+      remove("dictionnaire_tmp.txt");
+  }
+  return done;
+}
+
+void readRegister()
+{
+  FILE *file=fopen("smsRegister.txt","r");
+
+  char sms[MAX_LENGTH];
+
+
+
+  if(file!= NULL)
+  {
+     if (fgetc(file) == EOF) 
+     {
+           printf("Error : The file is empty\n" );
+        }
+        else
+        {
+          while(fgets(sms,MAX_LENGTH,file)!=NULL)
+               printf("%s\n",sms);
+        }
+          
+
+  }
+  else
+    printf("Error : Can't open the file\n" );
+
+  fclose(file);
 }

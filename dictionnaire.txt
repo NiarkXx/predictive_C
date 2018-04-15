@@ -1,4 +1,14 @@
-? 1
-Sahara 2
+? 2
+but 1
 comment 1
+de 1
+est 1
+gauche 1
+gentil 1
+la 1
 quietude 1
+salut 1
+tomates 1
+tres 1
+tu 1
+vas 1

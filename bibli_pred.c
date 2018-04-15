@@ -124,12 +124,19 @@ Motpred* recherche_pour_ajout(Motpred **tab, char motatrouver[Taille_max_pred], 
 Motpred* recherche_pred(Motpred **tab, char motatrouver[Taille_max_pred], int n)
 {
 	int trouve = 0;
+	int max_occur = 0;
 	unsigned long long placement = hachagepred(motatrouver, n);
 	Motpred* ptr = tab[placement];
+	Motpred* ptr_tmp;
 	while (ptr != NULL && trouve != 1)
 	{
 		if (strncmp(ptr -> lemot, motatrouver, n) == 0)
 		{
+			if(ptr -> occur > max_occur)
+			{
+				ptr_tmp = ptr;
+				max_occur = ptr_tmp -> occur;
+			}
 			trouve = 1;
 		}
 		else
@@ -139,7 +146,7 @@ Motpred* recherche_pred(Motpred **tab, char motatrouver[Taille_max_pred], int n)
 	}
 	if (trouve == 1)
 	{
-		return ptr;
+		return ptr_tmp;
 	}
 	else 
 	{

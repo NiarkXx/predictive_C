@@ -2,287 +2,270 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-//#include <SDL/SDL.h>
+#include <time.h>
+
+#include "bibli_pred.h"
+
+
+//----------------- CONSTANTS -----------------
 
 #define MAX_LENGTH 300
-#define MAX_LENGTH_WORD 50
+#define MAX_LENGTH_WORD 30
+#define clear() printf("\033[H\033[J")
+
+//----------------- STRUCTURES -----------------
 
 
 
-//void readWithEvent(void);
-//void createWindow(void);
-// bool searchEnter(char *string);
-// bool searchBackSlash(char *string);
-// bool searchSpace(char *string);
-void writeWordIntoDic(char string[]);
-//bool searchSpace(char *currentWord, char* wordAfter );
+//----------------- PROTOTYPES -----------------
+void typeSMSNonPredictive(void);
+void saveSMS(char *sms);
+void initArray(char *array);
+void selectMode(void);
+void menu(void);
+void cleanBuffer(void);
+void deleteWordIntoDic(void);
+void readRegister(void);
+//----------------- GLOBALS -----------------
 
+
+bool enablePredictive = false;
+char smsArray[MAX_LENGTH];
+char currentWord[MAX_LENGTH_WORD];
+
+
+//----------------- MAIN -----------------
 int main(int argc, char const *argv[]) {
-     // char current[MAX_LENGTH_WORD]="Je suis une phrase";
-     // char nextWord[MAX_LENGTH_WORD];
-     // bool spaceExist;
-     // char sentence[20] ="Jesuisunephrase";
-     // bool test;
-     //test=searchEnter(sentence);
-     //test=searchBackSlash(sentence);
-     // test=searchSpace(sentence);
-     //
-     //
-     // if(test==true)
-     //      printf("True\n" );
-     // else if(test==false)
-     //      printf("false\n" );
-     // else
-     //      printf("Error\n" );
-     writeWordIntoDic("Accident");
 
-     //spaceExist=searchSpace(current,nextWord);
+    // Motpred *mon_mot = (Motpred *)malloc(sizeof(Motpred));
+    // strcpy(mon_mot -> lemot, "avion");
+    // mon_mot -> occur = 2;
+    // Mot* mot2 = (Mot *)mon_mot;
+    // printf("%s\n", mot2->lemot);
+    // free(mot2);
 
-     //printf("Bool : %d \n Current : %s \n NextWord : %s \n",spaceExist,current, nextWord );
-     return EXIT_SUCCESS;
+     menu();
+
+     //saveSMS(sms);
+
+
+     return 0;
 }
 
-// bool searchEnter(char *string)
-// {
-//      bool value=false;
-//
-//      for(int i=0;i<strlen(string);i++)
-//      {
-//           if(string[i]=='\n')
-//                value= true;
-//      }
-//      return value;
-// }
-//
-// bool searchBackSlash(char *string)
-// {
-//      bool value=false;
-//      for(int i=0;i<strlen(string);i++)
-//      {
-//           if(string[i]=='/')
-//                value= true;
-//      }
-//      return value;
-// }
-//
-// bool searchSpace(char *currentWord, char *wordAfter )
-// {
-//      bool value=false;
-//      int counter=0;
-//      bool done=false;
-//      for(int i=0;i<strlen(currentWord);i++)
-//      {
-//           if(currentWord[i]==' ')
-//           {
-//                value=true;
-//           }
-//
-//           if(value && done==false)
-//           {
-//                for(int j=i;j<strlen(currentWord);j++)
-//                {
-//                     done=true;
-//                     wordAfter[counter]=currentWord[j];
-//                     counter++;
-//
-//                }
-//           }
-//      }
-//
-//      return value;
-//
-// }
+//----------------- FUNCTIONS -----------------
 
 
-void readSMS()
+void typeSMSNonPredictive()
 {
-     FILE *fileToRead=fopen("smsProf.txt","r");
-     FILE *fileToWrite=fopen("dictionnaire.txt","");
-     char wordOne[MAX_LENGTH_WORD];
-     char wordTwo[MAX_LENGTH_WORD];
-     int occurence=0;
+    int charNb=0;
+    char buffer[MAX_LENGTH];
 
-     if(fileToRead!=NULL)
+    initArray(buffer);
+    cleanBuffer();
+
+     printf("Type your text : \n" );
+
+     fgets(smsArray,MAX_LENGTH,stdin);
+
+     while(smsArray[charNb] !='\n')
      {
-          while(fscanf(fileToRead,"%s\n",wordOne)==1)
-          {
-               while(fscanf(fileToRead,"%s",wordTwo)==1)
-               {
-                    if(strcmp(wordOne,wordTwo)==0)
-                         occurence++;
-               }
-
-
-          }
-
-
-
+       buffer[charNb]=smsArray[charNb];
+       charNb++;
      }
-     else
-          printf("Error : Can't open the file\n");
 
-     fclose(fileToRead);
+     saveSMS(buffer);
+}
+
+void initArray(char *array)
+{
+     for (int i=0;i<MAX_LENGTH_WORD;i++)
+          array[i]='\0';
+}
+
+void cleanBuffer(void)
+{
+     int c=0;
+     while(c !='\n' && c!=EOF)
+     {
+          c=getchar();
+     }
+}
+
+void saveSMS(char *sms)
+{
+  time_t timestamp;
+  FILE *file=fopen("smsRegister.txt","a");
+
+  timestamp= time(NULL);
+
+  if(file!=NULL)
+    fprintf(file, "%s --> %s",sms,ctime(&timestamp));
+
+  else
+    printf("Error : Can't open the file\n" );
+
+  fclose(file);
 }
 
 
-
-void writeWordIntoDic(char string[])
+void selectMode()
 {
-     FILE *file=fopen("dictionnaire.txt","r+");
-     int cursor=0;
-     char word[MAX_LENGTH];
-     FILE *fileCopy=fopen("dictionnaire_tmp.txt","w+");
-     bool done=false;
-     int occurence=0;
-
-     if (file!=NULL && fileCopy!=NULL) {
-          rewind(file);
-
-          while(fscanf(file, "%s %d", word, &occurence)!=EOF)
-          {
-               if(done!=true)
-               {
-                    if(strcoll(word,string)<0)
-                    {
-                         fprintf(fileCopy, "%s %d\n",word,occurence );
-                    }
-                    else if(strcoll(word,string)==0)
-                    {
-                         occurence++;
-                         fprintf(fileCopy,"%s %d\n",word, occurence);
-                         done=true;
-                    }
-                    else
-                    {
-                         fprintf(fileCopy,"%s %d\n",string,1);
-                         fprintf(fileCopy,"%s %d\n",word,occurence);
-                         done=true;
-                    }
-               }
-               else
-               {
-                    fprintf(fileCopy,"%s %d\n",word,occurence);
-               }
-          }
+     if (enablePredictive) {
+          //typeSMSPredictive();
+          printf("\n \ntypeSMSPredictive\n" );
      }
      else
-          printf("Error : Can't read the file\n");
+          typeSMSNonPredictive();
+}
+
+
+void menu()
+{
+     int input=0;
+     bool quit=false;
+     while(quit == false)
+     {
+
+          printf("\n\nPredictive Text Simulation \n" );
+          printf("---------------------------------\n");
+          printf("1) Enable/Disable Predictive Text. ( Currently : " );
+
+          if(enablePredictive ==true)
+               printf("TRUE )\n" );
+          else
+               printf("FALSE )\n" );
+
+          printf("2) Type a SMS\n" );
+          printf("3) Delete a word in the prediction Dictionnary\n" );
+          printf("4) Read the smsRegister\n" );
+          printf("5) Quit\n" );
+          scanf("%d",&input );
+
+          input=(int)input;
+
+          if(input!= 1 && input !=2  && input!= 3 && input!= 4 && input!= 5)
+          {
+            printf("Error: Please type a right value (1 , 2 , 3,  4 or 5) \n");
+
+          }
+          else
+          {
+            switch (input) {
+              case 1:
+              enablePredictive= !enablePredictive;
+
+              break;
+
+              case 2:
+              selectMode();
+              break;
+              case 3:
+              deleteWordIntoDic();
+              break;
+
+              case 4:
+              readRegister();
+              break;
+
+              case 5:
+              quit=true;
+              break;
+
+              default:
+              break;
+            }
+
+          }
+     }
+}
+
+
+void deleteWordIntoDic()
+{
+     FILE *file = fopen("dictionnaire.txt","r+");
+     FILE *fileCopy = fopen("dictionnaire_tmp.txt","w+");
+     bool done = false;
+     char word_dic[MAX_LENGTH_WORD];
+     int occurence = 1;
+     int removeTest;
+     int renameTest;
+     char wordToDelete[MAX_LENGTH_WORD];
+     Motpred** dico = (Motpred**)malloc(sizeof(Motpred*));
+
+     if (file != NULL && fileCopy != NULL)
+      {
+        rewind(file);
+        if (fgetc(file) == EOF) {
+           printf("Error : The file is empty\n" );
+        }
+        else
+         {
+           rewind(file);
+           initArray(word_dic);
+           cleanBuffer();
+           printf("Type the word to delete : \n");
+
+           scanf("%s",wordToDelete);
+
+           dico = lecture_fichier_pred((int)strlen(wordToDelete));
+
+           if(recherche_pred(dico, wordToDelete, (int)strlen(wordToDelete))!=NULL)
+           {
+             while(fscanf(file, "%s %d", word_dic, &occurence)==2)
+             {
+               if(strcmp(wordToDelete,word_dic)!=0)
+               {
+                 fprintf(fileCopy, "%s %d\n",word_dic,occurence );
+               }
+               
+             }
+             done=true;
+           }
+           else
+            printf("Error : This word does not exists in the file \n");
+         }
+     }
+     else
+      printf("Error : Can't open the file");
 
      fclose(file);
      fclose(fileCopy);
-     remove("dictionnaire.txt");
-     rename("dictionnaire_tmp.txt","dictionnaire.txt");
+
+     if(done)
+     {
+       removeTest = remove("dictionnaire.txt");
+       if (removeTest != 0)
+       printf("Error to remove the file");
+
+       renameTest = rename("dictionnaire_tmp.txt", "dictionnaire.txt");
+
+       if (renameTest != 0) {
+         printf("Error to rename");
+     }
+     else
+      remove("dictionnaire_tmp.txt");
+  }
 }
 
 
+void readRegister()
+{
+  FILE *file=fopen("smsRegister.txt","r");
 
-// void writeWordIntoDic(char string[])
-// {
-// 	FILE *file=fopen("dictionnaire.txt","r+");
-//      int cursor=0;
-//      char word[MAX_LENGTH];
-//      FILE *fileCopy=fopen("dictionnaire_tmp.txt","w+");
-//      bool done=false;
-//
-// 	if (file!=NULL && fileCopy!=NULL) {
-//           rewind(file);
-//
-//           while(fscanf(file, "%s", word)!=EOF)
-//           //while(fscanf(file, "%s", word)==1)
-//           {
-//                if(done!=true)
-//                {
-//                     if(strcoll(word,string)<0)
-//                     {
-//                          fprintf(fileCopy, "%s\n",word );
-//                     }
-//                     else
-//                     {
-//                          fprintf(fileCopy,"%s\n",string);
-//                          fprintf(fileCopy,"%s\n",word);
-//                          done=true;
-//                     }
-//                }
-//                else
-//                     fprintf(fileCopy,"%s\n",word);
-//           }
-// 	}
-//      else
-// 	    printf("Error : Can't read the file\n");
-//
-// 	fclose(file);
-//      fclose(fileCopy);
-//      remove("dictionnaire.txt");
-//      rename("dictionnaire_tmp.txt","dictionnaire.txt");
-// }
+  char sms[MAX_LENGTH];
 
-//-------------------------------------------------------
-// void createWindow()
-// {
-//      if(SDL_Init(SDL_INIT_VIDEO)==-1)
-//      {
-//           fprintf(stderr, "Error Initialization SDL_VIDEO : %s \n",SDL_GetError());
-//           exit(EXIT_FAILURE);
-//      }
-//      else
-//      {
-//           SDL_SetVideoMode(640,480,32, SDL_HWSURFACE);
-//
-//           // SDL_Window *screen = SDL_CreateWindow("My Game Window",
-//           //                 SDL_WINDOWPOS_UNDEFINED,
-//           //                 SDL_WINDOWPOS_UNDEFINED,
-//           //                 640, 480,
-//           //                 SDL_WINDOW_FULLSCREEN | SDL_WINDOW_OPENGL);
-//
-//      }
-//
-// }
-//
-//
-// void readWithEvent()
-// {
-//      bool continueToWait=true;
-//      int keyValue;
-//      char castKeyValue;
-//
-//      while(continueToWait)
-//      {
-//           SDL_Event event;
-//           while(SDL_PollEvent(&event))
-//           {
-//                //SDL_PollEvent(&event);
-//                // if(event.type==SDL_KEYDOWN)
-//                // {
-//                //      printf("Right event\n" );
-//                //      keyValue=event.key.keysym.sym;
-//                //      castKeyValue=(char)keyValue;
-//                //      printf("%d --> %c\n",keyValue,castKeyValue );
-//                //
-//                // }
-//                // else
-//                // {
-//                //      printf("Wrong event\n" );
-//                //
-//                // }
-//                switch (event.type) {
-//
-//                     case SDL_QUIT:
-//                          continueToWait=false;
-//                          break;
-//
-//                     case SDL_KEYDOWN:
-//                     keyValue= event.key.keysym.sym;
-//                     castKeyValue=(char)keyValue;
-//                     printf("%d --> %c\n",keyValue,castKeyValue );
-//                     switch (event.key.keysym.sym) {
-//                          case SDLK_b:
-//                          printf("It's B key\n" );
-//                          break;
-//                     }
-//                     break;
-//                     default :
-//                          break;
-//                }
-//           }
-//      }
-// }
+
+
+  if(file!= NULL)
+  {
+    // while(fscanf(file,"%s \n",sms)==1)
+    //   printf("%s\n",sms);
+    while(fgets(sms,MAX_LENGTH,file)!=NULL)
+      printf("%s\n",sms);
+
+  }
+  else
+    printf("Error : Can't open the file\n" );
+
+  fclose(file);
+}
