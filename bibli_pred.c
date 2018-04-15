@@ -156,13 +156,20 @@ Motpred* recherche_pred(Motpred **tab, char motatrouver[Taille_max_pred], int n)
 
 Motpred* recherche_2eme_pred(Motpred **tab, char motatrouver[Taille_max_pred], int n, char mot1[Taille_max_pred])
 {
+	int max_occur = 0;
 	int trouve = 0;
 	unsigned long long placement = hachagepred(motatrouver, n);
 	Motpred* ptr = tab[placement];
+	Motpred* ptr_tmp;
 	while (ptr != NULL && trouve != 1)
 	{
 		if (strncmp(ptr -> lemot, motatrouver, n) == 0 && strcmp(ptr->lemot, mot1)!=0)
 		{
+			if(ptr -> occur > max_occur)
+			{
+				ptr_tmp = ptr;
+				max_occur = ptr_tmp -> occur;
+			}
 			trouve = 1;
 		}
 		else
@@ -172,7 +179,7 @@ Motpred* recherche_2eme_pred(Motpred **tab, char motatrouver[Taille_max_pred], i
 	}
 	if (trouve == 1)
 	{
-		return ptr;
+		return ptr_tmp;
 	}
 	else 
 	{
@@ -182,13 +189,20 @@ Motpred* recherche_2eme_pred(Motpred **tab, char motatrouver[Taille_max_pred], i
 
 Motpred* recherche_3eme_pred(Motpred **tab, char motatrouver[Taille_max_pred], int n, char mot1[Taille_max_pred], char mot2[Taille_max_pred])
 {
+	int max_occur;
 	int trouve = 0;
 	unsigned long long placement = hachagepred(motatrouver, n);
 	Motpred* ptr = tab[placement];
+	Motpred* ptr_tmp;
 	while (ptr != NULL && trouve != 1)
 	{
 		if (strncmp(ptr -> lemot, motatrouver, n) == 0 && strcmp(ptr->lemot, mot1)!=0 && strcmp(ptr->lemot, mot2)!=0)
 		{
+			if(ptr -> occur > max_occur)
+			{
+				ptr_tmp = ptr;
+				max_occur = ptr_tmp -> occur;
+			}
 			trouve = 1;
 		}
 		else
@@ -198,7 +212,7 @@ Motpred* recherche_3eme_pred(Motpred **tab, char motatrouver[Taille_max_pred], i
 	}
 	if (trouve == 1)
 	{
-		return ptr;
+		return ptr_tmp;
 	}
 	else 
 	{
